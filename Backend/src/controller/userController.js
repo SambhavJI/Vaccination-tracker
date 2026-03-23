@@ -1,11 +1,8 @@
-import BabyInfo from "../models/babyInfo.js"; 
+import BabyInfo from "../models/babyInfo.js";
 
 const allBaby = async (req, res) => {
     try {
-        const { userId } = req.body;
-        if (!userId) {
-            return res.status(400).json({ message: "userId is required" });
-        }
+        const userId = req.user.id;
         const babyInfo = await BabyInfo.find({ user: userId });
         res.status(200).json({
             count: babyInfo.length,

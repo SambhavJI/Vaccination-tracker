@@ -26,8 +26,28 @@ const userSchema = new mongoose.Schema({
         required: true,
         enum: ["admin", "user"],
         default: "user"
-    }
-});
+    },
+
+    documents: [
+        {
+            url: {
+                type: String,
+                required: true
+            },
+            public_id: {
+                type: String
+            },
+            name: {
+                type: String
+            },
+            uploadedAt: {
+                type: Date,
+                default: Date.now
+            }
+        }
+    ]
+
+}, { timestamps: true });
 
 const User = mongoose.model("User", userSchema);
 
