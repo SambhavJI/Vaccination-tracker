@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 import Vaccine from "../models/masterVaccine.js";
 import babyVaccinesSeed from "../data/babyVaccines.js";
+import motherVaccinesSeed from "../data/motherVaccine.js";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-// Connect DB
 if (!process.env.MONGODB_URI) {
     console.error("❌ MONGODB_URI is not defined in .env");
     process.exit(1);
@@ -16,14 +16,17 @@ const seedVaccines = async () => {
         await mongoose.connect(process.env.MONGODB_URI);
         console.log("🌱 Database connected. Seeding vaccines...");
 
-        // ❌ Remove old defaults (optional safety)
-        await Vaccine.deleteMany({ isDefault: true });
+        const allVaccines = [
+            ...babyVaccinesSeed,
+            ...motherVaccinesSeed
+        ];
 
-        // Directly use the data since it's already formatted correctly in babyVaccines.js
-        await Vaccine.insertMany(babyVaccinesSeed);
+        await Vaccine.deleteMany({ isDefault: true, createdBy: null });
+
+        await Vaccine.insertMany(allVaccines, { ordered: false });
 
         console.log("✅ Default vaccines seeded successfully!");
-        process.exit();
+        process.exit(0);
 
     } catch (error) {
         console.error("❌ Seeding failed:", error);

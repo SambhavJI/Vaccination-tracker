@@ -4,20 +4,21 @@ const vaccineSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+    unique: true
   },
 
   description: String,
   sideEffects: String,
 
-  ageInWeeks: {
+  timingInWeeks: {
     type: Number,
     required: true,
   },
 
   category: {
     type: String,
-    enum: ["baby", "mother"],
-    default: "baby"
+    enum: ["baby", "pregnancy", "postpartum"],
+    required: true
   },
 
   isDefault: {
