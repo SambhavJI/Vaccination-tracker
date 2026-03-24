@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import connectDb from './config/db.js';
 import authRouter from './routes/authRouter.js';
 import dotenv from 'dotenv';
@@ -9,11 +10,17 @@ dotenv.config();
 
 const app = express();
 
-app.use(express.json()); 
-app.use(cookieParser());   
-app.use("/",authRouter)
-app.use("/admin",adminRouter)
-app.use("/user",userRouter)
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+app.use(express.json());
+app.use(cookieParser());
+app.use("/", authRouter)
+app.use("/admin", adminRouter)
+app.use("/user", userRouter)
 
 connectDb().then(
     () => {

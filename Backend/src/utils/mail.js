@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 async function sendEmail({ to, subject, html }) {
     try {
         await transporter.sendMail({
-            from: `"Your App" <${process.env.EMAIL_USER}>`,
+            from: `"Vaccination Tracker" <${process.env.EMAIL}>`,
             to,
             subject,
             html,

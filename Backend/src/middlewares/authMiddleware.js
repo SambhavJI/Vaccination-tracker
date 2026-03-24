@@ -4,10 +4,14 @@ dotenv.config();
 
 const authMiddleware = async (req, res, next) => {
     try {
-        const token = req.cookies.token;
+        let token = req.cookies.token;
+        if (!token && req.headers.authorization) {
+            token = req.headers.authorization.split(" ")[1];
+        }
+
         if (!token) {
-            res.status(404).json({
-                message: "Token not found login again"
+            return res.status(401).json({
+                message: "Authentication token missing. Please login again."
             })
         }
         const verifiedUser = jwt.verify(token, process.env.JWT_SECRET);
@@ -18,7 +22,6 @@ const authMiddleware = async (req, res, next) => {
             message: "Please Login Again" + err
         })
     }
-
 }
 const authorizeRole = (...allowedRoles) => {
     return (req, res, next) => {
@@ -29,4 +32,4 @@ const authorizeRole = (...allowedRoles) => {
     };
 };
 
-export {authMiddleware,authorizeRole};
+export { authMiddleware, authorizeRole };
