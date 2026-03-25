@@ -4,6 +4,7 @@ import { allBaby , getAllVaccines, pendingVaccination } from '../controller/user
 import upload from '../middlewares/upload.js';
 import User from '../models/user.js';
 import cloudinary from '../config/cloudinary.js';
+import userVaccine from '../models/userVaccine.js';
 
 const userRouter = express.Router();
 
@@ -13,6 +14,18 @@ userRouter.get(
     authMiddleware,
     authorizeRole('user', 'admin'),
     allBaby
+);
+userRouter.get(
+    '/all-vaccines',
+    authMiddleware,
+    authorizeRole('user', 'admin'),
+    getAllVaccines
+);
+userRouter.get(
+    '/pending-vaccination',
+    authMiddleware,
+    authorizeRole('user', 'admin'),
+    pendingVaccination
 );
 
 

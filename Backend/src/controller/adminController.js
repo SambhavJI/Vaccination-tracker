@@ -14,7 +14,11 @@ const getAllUsers = async (req, res) => {
 
 const registerChild = async (req, res) => {
     try {
-        const { userId, babyName, dateOfBirth, motherConceiveDate } = req.body;
+        let { userId, babyName, dateOfBirth, motherConceiveDate } = req.body;
+
+        if (req.user.role === 'user') {
+            userId = req.user.id;
+        }
 
         if (!userId || !babyName || !dateOfBirth) {
             return res.status(400).json({ message: "userId, babyName and dateOfBirth are required" });
@@ -145,10 +149,15 @@ const setPendingStatus = async (req, res) => {
         if (!userVaccineId) {
             return res.status(400).json({ message: "userVaccineId is required" });
         }
-        const userVaccine = await UserVaccine.findById(userVaccineId);
+        const userVaccine = await UserVaccine.findById(userVaccineId).populate('babyInfo');
         if (!userVaccine) {
             return res.status(404).json({ message: "User vaccine not found" });
         }
+
+        if (req.user.role !== 'admin' && userVaccine.babyInfo.user.toString() !== req.user.id) {
+            return res.status(403).json({ message: "Access denied. You can only update vaccines for your own children." });
+        }
+
         userVaccine.status = "Completed";
         await userVaccine.save();
         res.status(200).json({ message: "User vaccine status set to completed successfully" });
