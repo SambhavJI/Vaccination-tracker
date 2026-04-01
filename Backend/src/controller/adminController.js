@@ -12,6 +12,15 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+const getAllBabies = async (req, res) => {
+    try {
+        const babies = await BabyInfo.find().populate('user', 'name phone email');
+        res.status(200).json({ count: babies.length, babies });
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching all babies: " + err.message });
+    }
+}
+
 const registerChild = async (req, res) => {
     try {
         let { userId, babyName, dateOfBirth, motherConceiveDate } = req.body;
@@ -69,15 +78,20 @@ const registerChild = async (req, res) => {
 
 const getPendingVaccinesForComingMonth = async (req, res) => {
     try {
-        const { babyInfoId } = req.body;
+        const babyInfoId = req.query.babyInfoId || req.body?.babyInfoId;
 
         if (!babyInfoId) {
             return res.status(400).json({ message: "babyInfoId is required" });
         }
 
+        // First, find all vaccines that belong to the "baby" category
+        const babyVaccines = await Vaccine.find({ category: "baby" }).select("_id");
+        const babyVaccineIds = babyVaccines.map(v => v._id);
+
         const pendingVaccines = await UserVaccine.find({
             babyInfo: babyInfoId,
             status: "Pending",
+            vaccine: { $in: babyVaccineIds }
         }).populate("vaccine").populate("babyInfo").sort({ scheduledDate: 1 });
 
         res.status(200).json({
@@ -165,4 +179,4 @@ const setPendingStatus = async (req, res) => {
         res.status(500).json({ message: "Error setting user vaccine status to completed: " + error.message });
     }
 }
-export { getAllUsers, registerChild, getPendingVaccinesForComingMonth, insertSpecialVaccine, setPendingStatus };
+export { getAllUsers, getAllBabies, registerChild, getPendingVaccinesForComingMonth, insertSpecialVaccine, setPendingStatus };
