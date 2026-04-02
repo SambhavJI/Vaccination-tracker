@@ -39,7 +39,7 @@ export default function HomeScreen({ navigation }) {
 
     return (
         <SafeAreaView style={styles.safeArea}>
-            <StatusBar barStyle="dark-content" backgroundColor="#f8fafc" />
+            <StatusBar barStyle="dark-content" backgroundColor="#FFF0F5" />
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.greeting}>Welcome,</Text>
@@ -61,7 +61,7 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: '#f8fafc',
+        backgroundColor: '#FFF0F5',
     },
     container: {
         flex: 1,
@@ -74,13 +74,13 @@ const styles = StyleSheet.create({
     },
     greeting: {
         fontSize: 24,
-        color: '#64748b',
+        color: '#C48BA0',
         fontWeight: '500',
     },
     name: {
         fontSize: 36,
         fontWeight: '800',
-        color: '#0f172a',
+        color: '#3D1A26',
         marginTop: 4,
     },
     content: {
@@ -90,15 +90,20 @@ const styles = StyleSheet.create({
     },
     subtitle: {
         fontSize: 16,
-        color: '#94a3b8',
+        color: '#DEB8C8',
         textAlign: 'center',
     },
     logoutButton: {
-        backgroundColor: '#ef4444',
-        borderRadius: 12,
+        backgroundColor: '#F43F8A',
+        borderRadius: 14,
         paddingVertical: 16,
         alignItems: 'center',
         marginTop: 'auto',
+        shadowColor: '#F43F8A',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.35,
+        shadowRadius: 12,
+        elevation: 5,
     },
     logoutButtonText: {
         color: '#ffffff',

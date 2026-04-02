@@ -27,6 +27,31 @@ const userSchema = new mongoose.Schema({
         enum: ["admin", "user"],
         default: "user"
     },
+    address: {
+        type: String,
+        default: ""
+    },
+    dob: {
+        type: Date
+    },
+    emergencyContact: {
+        type: String,
+        default: ""
+    },
+    medical: {
+        conditions: [String],
+        allergies: [String],
+        complications: [String],
+        medications: [String]
+    },
+    pregnancy: {
+        lmp: Date,
+        dueDate: Date,
+        trimester: Number,
+        bloodGroup: String,
+        previousPregnancies: { type: Number, default: 0 },
+        highRisk: { type: Boolean, default: false }
+    },
 
     documents: [
         {

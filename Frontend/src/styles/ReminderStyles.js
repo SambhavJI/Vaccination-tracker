@@ -3,7 +3,7 @@ import { StyleSheet, Platform } from 'react-native';
 export const reminderStyles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: '#f8fafc',
+        backgroundColor: '#FFF0F5',
     },
     header: {
         paddingTop: Platform.OS === 'ios' ? 20 : 40,
@@ -11,7 +11,7 @@ export const reminderStyles = StyleSheet.create({
         paddingBottom: 20,
         backgroundColor: '#ffffff',
         borderBottomWidth: 1,
-        borderBottomColor: '#f1f5f9',
+        borderBottomColor: '#FFD6E8',
     },
     backButton: {
         flexDirection: 'row',
@@ -19,8 +19,8 @@ export const reminderStyles = StyleSheet.create({
         paddingHorizontal: 12,
         paddingVertical: 8,
         borderRadius: 12,
-        backgroundColor: '#fff',
-        shadowColor: '#000',
+        backgroundColor: '#FFE4EF',
+        shadowColor: '#F43F8A',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
@@ -30,18 +30,18 @@ export const reminderStyles = StyleSheet.create({
     },
     backText: {
         fontSize: 14,
-        color: '#3b82f6',
+        color: '#F43F8A',
         fontWeight: '700',
         marginLeft: 8,
     },
     title: {
         fontSize: 28,
         fontWeight: '800',
-        color: '#1e293b',
+        color: '#3D1A26',
     },
     subtitle: {
         fontSize: 14,
-        color: '#64748b',
+        color: '#C48BA0',
         marginTop: 4,
     },
     scroll: {
@@ -58,12 +58,12 @@ export const reminderStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: '#f1f5f9',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.05,
-        shadowRadius: 4,
-        elevation: 2,
+        borderColor: '#FFE4EF',
+        shadowColor: '#F43F8A',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.08,
+        shadowRadius: 8,
+        elevation: 3,
     },
     iconContainer: {
         width: 48,
@@ -72,6 +72,7 @@ export const reminderStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: 16,
+        backgroundColor: '#FFD6E8',
     },
     infoContainer: {
         flex: 1,
@@ -79,7 +80,7 @@ export const reminderStyles = StyleSheet.create({
     vaccineName: {
         fontSize: 16,
         fontWeight: '700',
-        color: '#334155',
+        color: '#3D1A26',
     },
     dueContainer: {
         flexDirection: 'row',
@@ -88,22 +89,24 @@ export const reminderStyles = StyleSheet.create({
     },
     dueLabel: {
         fontSize: 12,
-        color: '#64748b',
+        color: '#C48BA0',
         marginRight: 8,
     },
     dueTime: {
         fontSize: 12,
         fontWeight: '600',
-        color: '#ef4444',
+        color: '#F43F8A',
     },
     statusBadge: {
         paddingHorizontal: 8,
         paddingVertical: 4,
         borderRadius: 8,
+        backgroundColor: '#FFD6E8',
     },
     statusText: {
         fontSize: 10,
         fontWeight: '700',
         textTransform: 'uppercase',
+        color: '#F43F8A',
     }
 });

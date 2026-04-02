@@ -12,6 +12,10 @@ import ReminderScreen from './src/screens/ReminderScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import DocumentScreen from './src/screens/DocumentScreen';
+import ProfileFormScreen from './src/screens/ProfileFormScreen';
+import RegisterBabyScreen from './src/screens/RegisterBabyScreen';
+import TermsScreen from './src/screens/TermsScreen';
+import FAQScreen from './src/screens/FAQScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -66,6 +70,26 @@ export default function App() {
                     <Stack.Screen
                         name="Document"
                         component={DocumentScreen}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="ProfileForm"
+                        component={ProfileFormScreen}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="RegisterBaby"
+                        component={RegisterBabyScreen}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="Terms"
+                        component={TermsScreen}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="FAQ"
+                        component={FAQScreen}
                         options={{ headerShown: false }}
                     />
                 </Stack.Navigator>

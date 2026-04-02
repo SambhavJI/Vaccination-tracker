@@ -2,10 +2,18 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
+// Pink Cosy Palette
+// Primary:  #F43F8A (vibrant rose-pink)
+// Soft bg:  #FFF0F5 (blush white)
+// Card bg:  #FFFFFF
+// Accent:   #FF82B2 (light candy pink)
+// Text:     #3D1A26 (deep rose dark)
+// Muted:    #A07080 (dusty rose)
+
 export const landingStyles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: '#F8FAFC',
+        backgroundColor: '#FFF0F5',
     },
     container: {
         flex: 1,
@@ -18,23 +26,23 @@ export const landingStyles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         borderBottomLeftRadius: 40,
         borderBottomRightRadius: 40,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.05,
-        shadowRadius: 10,
-        elevation: 5,
+        shadowColor: '#F43F8A',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.12,
+        shadowRadius: 16,
+        elevation: 6,
         marginBottom: 20,
         paddingBottom: 40,
     },
     badgeContainer: {
-        backgroundColor: '#FEF2F2',
+        backgroundColor: '#FFD6E8',
         paddingHorizontal: 12,
         paddingVertical: 6,
         borderRadius: 20,
         marginBottom: 20,
     },
     badgeText: {
-        color: '#EF4444',
+        color: '#C2185B',
         fontSize: 12,
         fontWeight: '700',
         textTransform: 'uppercase',
@@ -43,17 +51,17 @@ export const landingStyles = StyleSheet.create({
     heroTitle: {
         fontSize: 32,
         fontWeight: '800',
-        color: '#0F172A',
+        color: '#3D1A26',
         textAlign: 'center',
         marginBottom: 16,
         lineHeight: 40,
     },
     highlight: {
-        color: '#EC4899',
+        color: '#F43F8A',
     },
     heroSubtitle: {
         fontSize: 15,
-        color: '#64748B',
+        color: '#A07080',
         textAlign: 'center',
         lineHeight: 24,
         marginBottom: 30,
@@ -63,12 +71,12 @@ export const landingStyles = StyleSheet.create({
         width: width * 0.65,
         height: width * 0.65,
         borderRadius: (width * 0.65) / 2,
-        backgroundColor: '#FDF2F8',
+        backgroundColor: '#FFD6E8',
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: '#EC4899',
+        shadowColor: '#F43F8A',
         shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.15,
+        shadowOpacity: 0.2,
         shadowRadius: 20,
         elevation: 8,
     },
@@ -91,7 +99,7 @@ export const landingStyles = StyleSheet.create({
     sectionTitle: {
         fontSize: 20,
         fontWeight: '700',
-        color: '#0F172A',
+        color: '#3D1A26',
     },
     gridContainer: {
         flexDirection: 'row',
@@ -99,16 +107,18 @@ export const landingStyles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     featureCard: {
-        width: (width - 64) / 2, // 24 padding each side (48) + 16 gap = 64
+        width: (width - 64) / 2,
         backgroundColor: '#FFFFFF',
         borderRadius: 20,
         padding: 16,
         marginBottom: 16,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.04,
-        shadowRadius: 8,
-        elevation: 2,
+        shadowColor: '#F43F8A',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.08,
+        shadowRadius: 10,
+        elevation: 3,
+        borderWidth: 1,
+        borderColor: '#FFE4EF',
     },
     iconContainer: {
         width: 44,
@@ -121,12 +131,12 @@ export const landingStyles = StyleSheet.create({
     cardTitle: {
         fontSize: 15,
         fontWeight: '700',
-        color: '#1E293B',
+        color: '#3D1A26',
         marginBottom: 6,
     },
     cardText: {
         fontSize: 13,
-        color: '#64748B',
+        color: '#A07080',
         lineHeight: 18,
     },
     // Auth Section
@@ -136,15 +146,15 @@ export const landingStyles = StyleSheet.create({
         paddingBottom: 40,
     },
     signupButton: {
-        backgroundColor: '#EC4899',
+        backgroundColor: '#F43F8A',
         paddingVertical: 18,
         borderRadius: 16,
         alignItems: 'center',
         marginBottom: 16,
-        shadowColor: '#EC4899',
+        shadowColor: '#F43F8A',
         shadowOffset: { width: 0, height: 8 },
-        shadowOpacity: 0.3,
-        shadowRadius: 12,
+        shadowOpacity: 0.35,
+        shadowRadius: 14,
         elevation: 6,
     },
     signupButtonText: {
@@ -159,10 +169,10 @@ export const landingStyles = StyleSheet.create({
         borderRadius: 16,
         alignItems: 'center',
         borderWidth: 2,
-        borderColor: '#E2E8F0',
+        borderColor: '#FFB3D0',
     },
     loginButtonText: {
-        color: '#0F172A',
+        color: '#F43F8A',
         fontSize: 16,
         fontWeight: '700',
         letterSpacing: 0.5,
@@ -174,12 +184,12 @@ export const landingStyles = StyleSheet.create({
     },
     footerText: {
         fontSize: 12,
-        color: '#94A3B8',
+        color: '#C48BA0',
         marginBottom: 4,
         fontWeight: '500',
     },
     footerTextSmall: {
         fontSize: 10,
-        color: '#CBD5E1',
+        color: '#DEB8C8',
     },
 });

@@ -23,7 +23,7 @@ export default function BeforeLoginScreen({ navigation }) {
 
     return (
         <SafeAreaView style={landingStyles.safeArea}>
-            <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+            <StatusBar barStyle="dark-content" backgroundColor="#FFF0F5" />
             <ScrollView style={landingStyles.container} showsVerticalScrollIndicator={false} bounces={false}>
                 {/* HERO SECTION */}
                 <View style={landingStyles.heroSection}>
@@ -53,8 +53,8 @@ export default function BeforeLoginScreen({ navigation }) {
                     <View style={landingStyles.gridContainer}>
                         {/* Card 1 */}
                         <View style={landingStyles.featureCard}>
-                            <View style={[landingStyles.iconContainer, { backgroundColor: '#EEF2FF' }]}>
-                                <Feather name="bell" size={20} color="#6366F1" />
+                            <View style={[landingStyles.iconContainer, { backgroundColor: '#FFD6E8' }]}>
+                                <Feather name="bell" size={20} color="#F43F8A" />
                             </View>
                             <Text style={landingStyles.cardTitle}>Smart Alerts</Text>
                             <Text style={landingStyles.cardText}>Timely reminders for upcoming vaccines.</Text>
@@ -62,8 +62,8 @@ export default function BeforeLoginScreen({ navigation }) {
 
                         {/* Card 2 */}
                         <View style={landingStyles.featureCard}>
-                            <View style={[landingStyles.iconContainer, { backgroundColor: '#FFF7ED' }]}>
-                                <Feather name="trending-up" size={20} color="#F97316" />
+                            <View style={[landingStyles.iconContainer, { backgroundColor: '#FFE9F3' }]}>
+                                <Feather name="trending-up" size={20} color="#E91E8C" />
                             </View>
                             <Text style={landingStyles.cardTitle}>Growth Tracking</Text>
                             <Text style={landingStyles.cardText}>Monitor your baby's development.</Text>
@@ -71,8 +71,8 @@ export default function BeforeLoginScreen({ navigation }) {
 
                         {/* Card 3 */}
                         <View style={landingStyles.featureCard}>
-                            <View style={[landingStyles.iconContainer, { backgroundColor: '#F0FDF4' }]}>
-                                <MaterialCommunityIcons name="book-open-page-variant-outline" size={22} color="#22C55E" />
+                            <View style={[landingStyles.iconContainer, { backgroundColor: '#FFF0F5' }]}>
+                                <MaterialCommunityIcons name="book-open-page-variant-outline" size={22} color="#FF82B2" />
                             </View>
                             <Text style={landingStyles.cardTitle}>Basic Info</Text>
                             <Text style={landingStyles.cardText}>Essential guides for your baby's health.</Text>
@@ -80,8 +80,8 @@ export default function BeforeLoginScreen({ navigation }) {
 
                         {/* Card 4 */}
                         <View style={landingStyles.featureCard}>
-                            <View style={[landingStyles.iconContainer, { backgroundColor: '#FDF2F8' }]}>
-                                <Feather name="lock" size={20} color="#EC4899" />
+                            <View style={[landingStyles.iconContainer, { backgroundColor: '#FFD6E8' }]}>
+                                <Feather name="lock" size={20} color="#F43F8A" />
                             </View>
                             <Text style={landingStyles.cardTitle}>Secure Data</Text>
                             <Text style={landingStyles.cardText}>Your family's privacy is our top priority.</Text>
@@ -110,6 +110,9 @@ export default function BeforeLoginScreen({ navigation }) {
                     {/* FOOTER */}
                     <View style={landingStyles.footer}>
                         <Text style={landingStyles.footerText}>Data Secured • Pediatric Approved</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('Terms')} activeOpacity={0.7}>
+                            <Text style={[landingStyles.footerText, { textDecorationLine: 'underline' }]}>Terms And Conditions</Text>
+                        </TouchableOpacity>
                         <Text style={landingStyles.footerTextSmall}>© 2026 Healthy Mom & Baby</Text>
                     </View>
                 </View>

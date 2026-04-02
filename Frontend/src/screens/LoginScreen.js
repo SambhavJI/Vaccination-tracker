@@ -78,7 +78,7 @@ export default function LoginScreen({ navigation }) {
 
     return (
         <SafeAreaView style={styles.safeArea}>
-            <StatusBar barStyle="dark-content" backgroundColor="#f8fafc" />
+            <StatusBar barStyle="dark-content" backgroundColor="#FFF0F5" />
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={styles.container}
@@ -149,7 +149,7 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: '#f8fafc',
+        backgroundColor: '#FFF0F5',
     },
     container: {
         flex: 1,
@@ -180,12 +180,12 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 32,
         fontWeight: '800',
-        color: '#0f172a',
+        color: '#3D1A26',
         marginBottom: 8,
     },
     subtitle: {
         fontSize: 16,
-        color: '#64748b',
+        color: '#C48BA0',
         lineHeight: 24,
     },
     formContainer: {
@@ -197,22 +197,22 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#334155',
+        color: '#A07080',
         marginBottom: 8,
     },
     input: {
         backgroundColor: '#ffffff',
-        borderWidth: 1,
-        borderColor: '#e2e8f0',
-        borderRadius: 12,
+        borderWidth: 1.5,
+        borderColor: '#FFD6E8',
+        borderRadius: 14,
         paddingHorizontal: 16,
         paddingVertical: 14,
         fontSize: 16,
-        color: '#0f172a',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.05,
-        shadowRadius: 2,
+        color: '#3D1A26',
+        shadowColor: '#F43F8A',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.06,
+        shadowRadius: 4,
         elevation: 2,
     },
     forgotPassword: {
@@ -220,20 +220,20 @@ const styles = StyleSheet.create({
         marginBottom: 24,
     },
     forgotPasswordText: {
-        color: '#3b82f6',
+        color: '#F43F8A',
         fontSize: 14,
         fontWeight: '600',
     },
     loginButton: {
-        backgroundColor: '#3b82f6',
-        borderRadius: 12,
+        backgroundColor: '#F43F8A',
+        borderRadius: 14,
         paddingVertical: 16,
         alignItems: 'center',
-        shadowColor: '#3b82f6',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-        elevation: 4,
+        shadowColor: '#F43F8A',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.35,
+        shadowRadius: 12,
+        elevation: 5,
     },
     loginButtonText: {
         color: '#ffffff',
@@ -253,11 +253,11 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     footerText: {
-        color: '#64748b',
+        color: '#C48BA0',
         fontSize: 15,
     },
     signupText: {
-        color: '#3b82f6',
+        color: '#F43F8A',
         fontSize: 15,
         fontWeight: '700',
     },
@@ -266,8 +266,9 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
     },
     backButtonText: {
-        color: '#3b82f6',
+        color: '#F43F8A',
         fontSize: 16,
         fontWeight: '600',
     },
 });
+
