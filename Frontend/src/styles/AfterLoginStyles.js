@@ -2,10 +2,19 @@ import { StyleSheet, Dimensions, Platform } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
+// Pink Cosy Palette
+// Primary:    #F43F8A (vibrant rose-pink)
+// Soft bg:    #FFF0F5 (blush white)
+// Card bg:    #FFFFFF
+// Accent:     #FF82B2 (light candy pink)
+// Deep text:  #3D1A26 (dark rose)
+// Muted:      #A07080 (dusty rose)
+// Border:     #FFD6E8 (light pink border)
+
 export const AfterLoginStyles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: '#fdf6f0', // Soft creamy peach
+        backgroundColor: '#FFF0F5',
     },
     scroll: {
         flex: 1,
@@ -28,13 +37,13 @@ export const AfterLoginStyles = StyleSheet.create({
     },
     welcomeText: {
         fontSize: 16,
-        color: '#8c7662',
+        color: '#C48BA0',
         fontWeight: '500',
     },
     userName: {
         fontSize: 26,
         fontWeight: '800',
-        color: '#4a3f35',
+        color: '#3D1A26',
     },
 
     // ── CARD BASE ──
@@ -43,13 +52,13 @@ export const AfterLoginStyles = StyleSheet.create({
         borderRadius: 24,
         padding: 20,
         marginBottom: 20,
-        shadowColor: '#4a3f35',
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.1,
-        shadowRadius: 15,
-        elevation: 8,
+        shadowColor: '#F43F8A',
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.12,
+        shadowRadius: 16,
+        elevation: 6,
         borderWidth: 1,
-        borderColor: '#f2ece4',
+        borderColor: '#FFE4EF',
     },
     cardHeader: {
         flexDirection: 'row',
@@ -80,8 +89,8 @@ export const AfterLoginStyles = StyleSheet.create({
 
     // ── CHILD CARD ──
     childCard: {
-        borderColor: '#b2ddd0',
-        backgroundColor: '#f4faf8',
+        borderColor: '#FFD6E8',
+        backgroundColor: '#FFF7FB',
     },
     childInfoGrid: {
         flexDirection: 'row',
@@ -94,7 +103,7 @@ export const AfterLoginStyles = StyleSheet.create({
     },
     childInfoLabel: {
         fontSize: 12,
-        color: '#6e8c83',
+        color: '#C48BA0',
         fontWeight: '600',
         textTransform: 'uppercase',
         letterSpacing: 0.5,
@@ -103,13 +112,13 @@ export const AfterLoginStyles = StyleSheet.create({
     childInfoValue: {
         fontSize: 15,
         fontWeight: '700',
-        color: '#2d3a36',
+        color: '#3D1A26',
     },
 
     // ── VACCINE CARD ──
     vaccineCard: {
-        borderColor: '#cad6ef',
-        backgroundColor: '#f5f8ff',
+        borderColor: '#FFB3D0',
+        backgroundColor: '#FFF0F7',
     },
     vaccineRow: {
         flexDirection: 'row',
@@ -119,7 +128,7 @@ export const AfterLoginStyles = StyleSheet.create({
     vaccineName: {
         fontSize: 22,
         fontWeight: '800',
-        color: '#1a3b7a',
+        color: '#C2185B',
     },
     dueBadge: {
         backgroundColor: '#fff',
@@ -129,22 +138,22 @@ export const AfterLoginStyles = StyleSheet.create({
         marginTop: 6,
         alignSelf: 'flex-start',
         borderWidth: 1,
-        borderColor: '#d0d9ec',
+        borderColor: '#FFB3D0',
     },
     dueText: {
         fontSize: 13,
         fontWeight: '700',
-        color: '#1a56c4',
+        color: '#E91E8C',
     },
     markDoneButton: {
-        backgroundColor: '#1a56c4',
+        backgroundColor: '#F43F8A',
         paddingHorizontal: 16,
         paddingVertical: 12,
         borderRadius: 14,
-        shadowColor: '#1a56c4',
+        shadowColor: '#F43F8A',
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
+        shadowOpacity: 0.35,
+        shadowRadius: 10,
         elevation: 4,
     },
     markDoneText: {
@@ -155,8 +164,8 @@ export const AfterLoginStyles = StyleSheet.create({
 
     // ── PROGRESS CARD ──
     progressCard: {
-        borderColor: '#f2d1e5',
-        backgroundColor: '#fffafc',
+        borderColor: '#FFD6E8',
+        backgroundColor: '#FFF7FB',
     },
     progressRow: {
         flexDirection: 'row',
@@ -167,32 +176,32 @@ export const AfterLoginStyles = StyleSheet.create({
     progressFraction: {
         fontSize: 28,
         fontWeight: '900',
-        color: '#702255',
+        color: '#C2185B',
     },
     progressPercent: {
         fontSize: 14,
         fontWeight: '700',
-        color: '#a0307a',
-        backgroundColor: '#fcecf6',
+        color: '#F43F8A',
+        backgroundColor: '#FFD6E8',
         paddingHorizontal: 8,
         paddingVertical: 4,
         borderRadius: 6,
     },
     progressBarBg: {
         height: 12,
-        backgroundColor: '#f2d1e5',
+        backgroundColor: '#FFD6E8',
         borderRadius: 6,
         overflow: 'hidden',
         marginBottom: 10,
     },
     progressBarFill: {
         height: '100%',
-        backgroundColor: '#a0307a',
+        backgroundColor: '#F43F8A',
         borderRadius: 6,
     },
     progressSubText: {
         fontSize: 13,
-        color: '#8c5d7a',
+        color: '#C48BA0',
         fontWeight: '500',
     },
 
@@ -200,7 +209,7 @@ export const AfterLoginStyles = StyleSheet.create({
     sectionLabel: {
         fontSize: 18,
         fontWeight: '800',
-        color: '#4a3f35',
+        color: '#3D1A26',
         marginTop: 10,
         marginBottom: 15,
     },
@@ -208,13 +217,13 @@ export const AfterLoginStyles = StyleSheet.create({
         flexDirection: 'row',
         paddingBottom: 12,
         borderBottomWidth: 1,
-        borderBottomColor: '#f2d9c8',
+        borderBottomColor: '#FFD6E8',
     },
     tableHeaderCell: {
         flex: 1,
         fontSize: 13,
         fontWeight: '700',
-        color: '#8c7662',
+        color: '#C48BA0',
         textTransform: 'uppercase',
         letterSpacing: 0.5,
     },
@@ -223,11 +232,9 @@ export const AfterLoginStyles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 14,
         borderBottomWidth: 1,
-        borderBottomColor: '#fcf3ed',
+        borderBottomColor: '#FFE4EF',
     },
-    tableRowEven: {
-        // backgroundColor: '#fdf9f6',
-    },
+    tableRowEven: {},
     tableRowLast: {
         borderBottomWidth: 0,
     },
@@ -235,7 +242,7 @@ export const AfterLoginStyles = StyleSheet.create({
         flex: 1,
         fontSize: 14,
         fontWeight: '600',
-        color: '#4a3f35',
+        color: '#3D1A26',
     },
     statusBadge: {
         paddingHorizontal: 8,
@@ -244,7 +251,7 @@ export const AfterLoginStyles = StyleSheet.create({
         alignSelf: 'flex-start',
     },
     statusBadgePending: {
-        backgroundColor: '#fff4e6',
+        backgroundColor: '#FFE4EF',
     },
     statusBadgeDone: {
         backgroundColor: '#e6fcf5',
@@ -254,7 +261,7 @@ export const AfterLoginStyles = StyleSheet.create({
         fontWeight: '700',
     },
     statusPending: {
-        color: '#d9480f',
+        color: '#C2185B',
     },
     statusDone: {
         color: '#087f5b',
@@ -263,16 +270,16 @@ export const AfterLoginStyles = StyleSheet.create({
     // ── LOGOUT ──
     logoutButton: {
         flexDirection: 'row',
-        backgroundColor: '#ff6b6b',
+        backgroundColor: '#F43F8A',
         padding: 16,
         borderRadius: 16,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 10,
-        shadowColor: '#ff6b6b',
+        shadowColor: '#F43F8A',
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
+        shadowOpacity: 0.35,
+        shadowRadius: 10,
         elevation: 4,
     },
     logoutText: {
@@ -290,7 +297,7 @@ export const AfterLoginStyles = StyleSheet.create({
         backgroundColor: '#fff',
         height: 70,
         borderTopWidth: 1,
-        borderTopColor: '#f2ece4',
+        borderTopColor: '#FFE4EF',
         paddingBottom: Platform.OS === 'ios' ? 20 : 0,
     },
     navItem: {
@@ -301,7 +308,7 @@ export const AfterLoginStyles = StyleSheet.create({
     navText: {
         fontSize: 10,
         fontWeight: '700',
-        color: '#6e6155',
+        color: '#C48BA0',
         marginTop: 4,
     },
 });
