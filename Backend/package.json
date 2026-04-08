@@ -26,6 +26,7 @@
     "node-cron": "^4.2.1",
     "nodemailer": "^8.0.1",
     "nodemon": "^3.1.11",
-    "resend": "^6.9.2"
+    "resend": "^6.9.2",
+    "twilio": "^5.13.1"
   }
 }
