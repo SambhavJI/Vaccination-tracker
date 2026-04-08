@@ -89,7 +89,7 @@ const registerMyChild = async (req, res) => {
         const dob = new Date(dateOfBirth);
         const userVaccines = defaultVaccines.map(vaccine => {
             const scheduledDate = new Date(dob);
-            scheduledDate.setDate(dob.getDate() + (vaccine.ageInWeeks * 7));
+            scheduledDate.setDate(dob.getDate() + (vaccine.timingInWeeks * 7));
             return {
                 babyInfo: babyInfo._id,
                 vaccine: vaccine._id,

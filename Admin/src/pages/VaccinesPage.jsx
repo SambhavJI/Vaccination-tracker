@@ -25,7 +25,7 @@ export default function VaccinesPage() {
 
   useEffect(() => {
     // Fetch all babies across all users (admin endpoint)
-    api.get('/admin/all-babies')
+    api.get('/admin/babies')
       .then((res) => {
         const data = res.data;
         const list = data.babies || data.babyInfo || data || [];

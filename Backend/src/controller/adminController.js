@@ -49,7 +49,7 @@ const registerChild = async (req, res) => {
         const dob = new Date(dateOfBirth);
         const userVaccines = defaultVaccines.map(vaccine => {
             const scheduledDate = new Date(dob);
-            scheduledDate.setDate(dob.getDate() + (vaccine.ageInWeeks * 7));
+            scheduledDate.setDate(dob.getDate() + (vaccine.timingInWeeks * 7));
 
             return {
                 babyInfo: babyInfo._id,
@@ -99,11 +99,11 @@ const getPendingVaccinesForComingMonth = async (req, res) => {
 
 const insertSpecialVaccine = async (req, res) => {
     try {
-        const { babyInfoId, name, description, sideEffects, ageInWeeks, category } = req.body;
+        const { babyInfoId, name, description, sideEffects, timingInWeeks, category } = req.body;
 
-        if (!babyInfoId || !name || !description || !ageInWeeks || !category) {
+        if (!babyInfoId || !name || !description || !timingInWeeks || !category) {
             return res.status(400).json({
-                message: "babyInfoId, name, description, ageInWeeks, and category are required."
+                message: "babyInfoId, name, description, timingInWeeks, and category are required."
             });
         }
 
@@ -118,7 +118,7 @@ const insertSpecialVaccine = async (req, res) => {
             name,
             description,
             sideEffects,
-            ageInWeeks,
+            timingInWeeks,
             category,
             isDefault: false
         });
@@ -127,7 +127,7 @@ const insertSpecialVaccine = async (req, res) => {
         // Compute scheduled date from baby's DOB
         const dob = new Date(babyInfo.dateOfBirth);
         const scheduledDate = new Date(dob);
-        scheduledDate.setDate(dob.getDate() + (ageInWeeks * 7));
+        scheduledDate.setDate(dob.getDate() + (timingInWeeks * 7));
 
         // Create user vaccine record
         const userVaccine = new UserVaccine({

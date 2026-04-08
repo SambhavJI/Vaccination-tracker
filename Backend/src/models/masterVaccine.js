@@ -9,7 +9,7 @@ const vaccineSchema = new mongoose.Schema({
   description: String,
   sideEffects: String,
 
-  ageInWeeks: {
+  timingInWeeks: {
     type: Number,
     required: true,
   },

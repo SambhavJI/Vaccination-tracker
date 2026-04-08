@@ -27,7 +27,7 @@ const fixMissingVaccines = async () => {
                 
                 const userVaccines = masterVaccines.map(vaccine => {
                     const scheduledDate = new Date(dob);
-                    scheduledDate.setDate(dob.getDate() + (vaccine.ageInWeeks * 7));
+                    scheduledDate.setDate(dob.getDate() + (vaccine.timingInWeeks * 7));
                     return {
                         babyInfo: baby._id,
                         vaccine: vaccine._id,

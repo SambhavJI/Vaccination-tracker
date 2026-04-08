@@ -1,16 +1,38 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
 import toast from 'react-hot-toast';
-import { HiOutlineSearch, HiOutlineRefresh } from 'react-icons/hi';
+import { HiOutlineSearch, HiOutlineRefresh, HiOutlinePlusCircle, HiOutlineX } from 'react-icons/hi';
 
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [addForm, setAddForm] = useState({ name: '', phone: '', email: '', password: '' });
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+    if (!addForm.name || !addForm.phone || !addForm.email || !addForm.password) {
+      return toast.error('All fields are required');
+    }
+    setSubmitting(true);
+    try {
+      await api.post('/signup', { ...addForm, role: 'user' });
+      toast.success('User created successfully');
+      setShowAddModal(false);
+      setAddForm({ name: '', phone: '', email: '', password: '' });
+      fetchUsers();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to create user');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -49,10 +71,16 @@ export default function UsersPage() {
           <h1 className="page-header__title">Users</h1>
           <p className="page-header__subtitle">{users.length} registered users</p>
         </div>
-        <button className="btn btn--outline" onClick={fetchUsers}>
-          <HiOutlineRefresh />
-          Refresh
-        </button>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button className="btn btn--primary" onClick={() => setShowAddModal(true)}>
+            <HiOutlinePlusCircle />
+            Add User
+          </button>
+          <button className="btn btn--outline" onClick={fetchUsers}>
+            <HiOutlineRefresh />
+            Refresh
+          </button>
+        </div>
       </div>
 
       {/* Search */}
@@ -115,6 +143,72 @@ export default function UsersPage() {
           </table>
         </div>
       </div>
+
+      {showAddModal && (
+        <div className="modal-overlay" onClick={() => setShowAddModal(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal__header">
+              <h2 className="modal__title">Add New User</h2>
+              <button className="modal__close" onClick={() => setShowAddModal(false)}>
+                <HiOutlineX />
+              </button>
+            </div>
+            <form className="form" onSubmit={handleAddSubmit}>
+              <div className="form__group">
+                <label className="form__label" htmlFor="user-name">Full Name *</label>
+                <input
+                  id="user-name"
+                  type="text"
+                  placeholder="John Doe"
+                  value={addForm.name}
+                  onChange={(e) => setAddForm({ ...addForm, name: e.target.value })}
+                  className="form__input"
+                />
+              </div>
+              <div className="form__group">
+                <label className="form__label" htmlFor="user-phone">Phone Number *</label>
+                <input
+                  id="user-phone"
+                  type="text"
+                  placeholder="1234567890"
+                  value={addForm.phone}
+                  onChange={(e) => setAddForm({ ...addForm, phone: e.target.value })}
+                  className="form__input"
+                />
+              </div>
+              <div className="form__group">
+                <label className="form__label" htmlFor="user-email">Email Address *</label>
+                <input
+                  id="user-email"
+                  type="email"
+                  placeholder="john@example.com"
+                  value={addForm.email}
+                  onChange={(e) => setAddForm({ ...addForm, email: e.target.value })}
+                  className="form__input"
+                />
+              </div>
+              <div className="form__group">
+                <label className="form__label" htmlFor="user-password">Password *</label>
+                <input
+                  id="user-password"
+                  type="password"
+                  placeholder="Secure password"
+                  value={addForm.password}
+                  onChange={(e) => setAddForm({ ...addForm, password: e.target.value })}
+                  className="form__input"
+                />
+              </div>
+              <button
+                type="submit"
+                className="btn btn--primary btn--full"
+                disabled={submitting}
+              >
+                {submitting ? <span className="login-card__spinner" /> : 'Register User'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
