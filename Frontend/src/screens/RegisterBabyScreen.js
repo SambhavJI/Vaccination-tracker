@@ -5,12 +5,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { apiPostAuth, apiPutAuth } from '../config/apiRequest';
 import { useFlash } from '../context/FlashContext';
 import { FontAwesome } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
+import LanguageToggle from '../components/LanguageToggle';
 
 const BLOOD_GROUPS = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
-const GENDERS = ['Male', 'Female', 'Other'];
+const GENDER_KEYS = ['male', 'female', 'other'];
 
 export default function RegisterBabyScreen({ route, navigation }) {
     const { showFlash } = useFlash();
+    const { t } = useTranslation();
 
     const existingBaby = route?.params?.babyData;
     const isEditMode = !!existingBaby;
@@ -34,7 +37,7 @@ export default function RegisterBabyScreen({ route, navigation }) {
 
     const handleSubmit = async () => {
         if (!babyName.trim() || !dateOfBirth.trim()) {
-            showFlash('Baby Name and Date of Birth are mandatory', 'warning');
+            showFlash(t('registerBaby.mandatoryFields'), 'warning');
             return;
         }
 
@@ -59,13 +62,13 @@ export default function RegisterBabyScreen({ route, navigation }) {
             }
 
             if (response.ok) {
-                showFlash(`Child ${isEditMode ? 'updated' : 'registered'} successfully!`, 'success');
+                showFlash(isEditMode ? t('registerBaby.updatedSuccess') : t('registerBaby.registeredSuccess'), 'success');
                 setTimeout(() => navigation.goBack(), 800);
             } else {
-                showFlash(data.message || 'Failed to save', 'error');
+                showFlash(data.message || t('registerBaby.failedToSave'), 'error');
             }
         } catch (error) {
-            showFlash('Connection Error', 'error');
+            showFlash(t('registerBaby.connectionError'), 'error');
         } finally {
             setLoading(false);
         }
@@ -75,7 +78,7 @@ export default function RegisterBabyScreen({ route, navigation }) {
         <Text style={styles.sectionLabel}>{text}</Text>
     );
 
-    const Selector = ({ options, selected, onSelect }) => (
+    const Selector = ({ options, selected, onSelect, labelFn }) => (
         <View style={styles.selectorRow}>
             {options.map(opt => (
                 <TouchableOpacity
@@ -83,7 +86,7 @@ export default function RegisterBabyScreen({ route, navigation }) {
                     style={[styles.selectorChip, selected === opt && styles.selectorChipActive]}
                     onPress={() => onSelect(selected === opt ? '' : opt)}
                 >
-                    <Text style={[styles.selectorChipText, selected === opt && styles.selectorChipTextActive]}>{opt}</Text>
+                    <Text style={[styles.selectorChipText, selected === opt && styles.selectorChipTextActive]}>{labelFn ? labelFn(opt) : opt}</Text>
                 </TouchableOpacity>
             ))}
         </View>
@@ -94,34 +97,35 @@ export default function RegisterBabyScreen({ route, navigation }) {
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
                     <FontAwesome name="chevron-left" size={14} color="#F43F8A" />
-                    <Text style={styles.backText}>Back</Text>
+                    <Text style={styles.backText}>{t('registerBaby.back')}</Text>
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>{isEditMode ? 'Edit Child' : 'Register Child'}</Text>
-                <View style={{ width: 60 }} />
+                <Text style={styles.headerTitle}>{isEditMode ? t('registerBaby.editChild') : t('registerBaby.registerChild')}</Text>
+                <LanguageToggle />
+                
             </View>
 
             <ScrollView contentContainerStyle={styles.container}>
                 <View style={styles.headerContainer}>
-                    <Text style={styles.title}>{isEditMode ? 'Update child details' : 'Add your child'}</Text>
-                    <Text style={styles.subtitle}>Name and Date of Birth are mandatory. Other fields are optional.</Text>
+                    <Text style={styles.title}>{isEditMode ? t('registerBaby.updateDetails') : t('registerBaby.addChild')}</Text>
+                    <Text style={styles.subtitle}>{t('registerBaby.formSubtitle')}</Text>
                 </View>
 
                 {/* Basic Info */}
-                <SectionLabel text="Basic Information" />
+                <SectionLabel text={t('registerBaby.basicInformation')} />
 
                 <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Child's Full Name *</Text>
-                    <TextInput style={styles.input} placeholder="Enter child's name" value={babyName} onChangeText={setBabyName} />
+                    <Text style={styles.label}>{t('registerBaby.childName')}</Text>
+                    <TextInput style={styles.input} placeholder={t('registerBaby.childNamePlaceholder')} value={babyName} onChangeText={setBabyName} />
                 </View>
 
                 <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Date of Birth *</Text>
+                    <Text style={styles.label}>{t('registerBaby.dateOfBirth')}</Text>
                     {Platform.OS === 'web' ? (
                         <TextInput style={styles.input} placeholder="YYYY-MM-DD" value={dateOfBirth} onChangeText={setDateOfBirth} />
                     ) : (
                         <>
                             <TouchableOpacity onPress={() => setShowDobPicker(true)} style={[styles.input, { justifyContent: 'center' }]}>
-                                <Text style={{ fontSize: 16, color: dateOfBirth ? '#3D1A26' : '#DEB8C8' }}>{dateOfBirth || "Select Date of Birth"}</Text>
+                                <Text style={{ fontSize: 16, color: dateOfBirth ? '#3D1A26' : '#DEB8C8' }}>{dateOfBirth || t('registerBaby.selectDob')}</Text>
                             </TouchableOpacity>
                             {showDobPicker && <DateTimePicker value={dateOfBirth ? new Date(dateOfBirth) : new Date()} mode="date" display="default" maximumDate={new Date()} onChange={(e, d) => { if (Platform.OS !== 'ios') setShowDobPicker(false); handleDateChange(e, d, setDateOfBirth, setShowDobPicker); }} />}
                         </>
@@ -129,26 +133,26 @@ export default function RegisterBabyScreen({ route, navigation }) {
                 </View>
 
                 <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Gender</Text>
-                    <Selector options={GENDERS} selected={gender} onSelect={setGender} />
+                    <Text style={styles.label}>{t('registerBaby.gender')}</Text>
+                    <Selector options={GENDER_KEYS} selected={gender} onSelect={setGender} labelFn={(key) => t('registerBaby.genders.' + key)} />
                 </View>
 
                 <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Blood Group</Text>
+                    <Text style={styles.label}>{t('registerBaby.bloodGroup')}</Text>
                     <Selector options={BLOOD_GROUPS} selected={bloodGroup} onSelect={setBloodGroup} />
                 </View>
 
                 {/* Pregnancy Info */}
-                <SectionLabel text="Pregnancy Details (Optional)" />
+                <SectionLabel text={t('registerBaby.pregnancyDetails')} />
 
                 <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Mother's Conception Date</Text>
+                    <Text style={styles.label}>{t('registerBaby.conceptionDate')}</Text>
                     {Platform.OS === 'web' ? (
                         <TextInput style={styles.input} placeholder="YYYY-MM-DD" value={motherConceiveDate} onChangeText={setMotherConceiveDate} />
                     ) : (
                         <>
                             <TouchableOpacity onPress={() => setShowMcdPicker(true)} style={[styles.input, { justifyContent: 'center' }]}>
-                                <Text style={{ fontSize: 16, color: motherConceiveDate ? '#3D1A26' : '#DEB8C8' }}>{motherConceiveDate || "Select Conception Date"}</Text>
+                                <Text style={{ fontSize: 16, color: motherConceiveDate ? '#3D1A26' : '#DEB8C8' }}>{motherConceiveDate || t('registerBaby.selectConceptionDate')}</Text>
                             </TouchableOpacity>
                             {showMcdPicker && <DateTimePicker value={motherConceiveDate ? new Date(motherConceiveDate) : new Date()} mode="date" display="default" onChange={(e, d) => { if (Platform.OS !== 'ios') setShowMcdPicker(false); handleDateChange(e, d, setMotherConceiveDate, setShowMcdPicker); }} />}
                         </>
@@ -156,7 +160,7 @@ export default function RegisterBabyScreen({ route, navigation }) {
                 </View>
 
                 <TouchableOpacity style={styles.submitButton} onPress={handleSubmit} disabled={loading}>
-                    {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.submitButtonText}>{isEditMode ? 'Save Changes' : 'Register Child'}</Text>}
+                    {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.submitButtonText}>{isEditMode ? t('registerBaby.saveChanges') : t('registerBaby.registerChild')}</Text>}
                 </TouchableOpacity>
             </ScrollView>
         </SafeAreaView>

@@ -18,11 +18,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { apiPutAuth } from '../config/apiRequest';
 import { useFlash } from '../context/FlashContext';
+import { useTranslation } from 'react-i18next';
+import LanguageToggle from '../components/LanguageToggle';
 
 const MIN_TOUCH_TARGET = 44;
 
 export default function ProfileFormScreen({ route, navigation }) {
     const { showFlash } = useFlash();
+    const { t } = useTranslation();
 
     const existingProfile = route?.params?.profileData || {};
 
@@ -30,25 +33,24 @@ export default function ProfileFormScreen({ route, navigation }) {
     const [address, setAddress] = useState(existingProfile.address || '');
     const [dob, setDob] = useState(existingProfile.dob ? existingProfile.dob.split('T')[0] : '');
     const [emergencyContact, setEmergencyContact] = useState(existingProfile.emergencyContact || '');
-    
+
     // Medical
     const [conditions, setConditions] = useState(existingProfile.medical?.conditions?.join(', ') || '');
     const [allergies, setAllergies] = useState(existingProfile.medical?.allergies?.join(', ') || '');
     const [complications, setComplications] = useState(existingProfile.medical?.complications?.join(', ') || '');
     const [medications, setMedications] = useState(existingProfile.medical?.medications?.join(', ') || '');
-    
+
     // Pregnancy
     const [lmp, setLmp] = useState(existingProfile.pregnancy?.lmp ? existingProfile.pregnancy.lmp.split('T')[0] : '');
     const calculateDueDate = (lmpDate) => {
         if (!lmpDate) return '';
         const date = new Date(lmpDate);
         if (isNaN(date.getTime())) return '';
-        // Add 9 months
         date.setMonth(date.getMonth() + 9);
         return date.toISOString().split('T')[0];
     };
     const dueDate = calculateDueDate(lmp);
-    
+
     const [trimester, setTrimester] = useState(existingProfile.pregnancy?.trimester ? existingProfile.pregnancy.trimester.toString() : '');
     const [bloodGroup, setBloodGroup] = useState(existingProfile.pregnancy?.bloodGroup || '');
     const [previousPregnancies, setPreviousPregnancies] = useState(existingProfile.pregnancy?.previousPregnancies !== undefined && existingProfile.pregnancy.previousPregnancies !== null ? existingProfile.pregnancy.previousPregnancies.toString() : '0');
@@ -84,9 +86,9 @@ export default function ProfileFormScreen({ route, navigation }) {
     };
 
     const handleSubmit = async () => {
-        if (!address.trim() || !dob.trim() || !emergencyContact.trim() || !lmp.trim() || 
+        if (!address.trim() || !dob.trim() || !emergencyContact.trim() || !lmp.trim() ||
             !trimester.trim() || !bloodGroup.trim()) {
-            showFlash('Basic Info and core Pregnancy details are mandatory.', 'warning');
+            showFlash(t('profileForm.mandatoryFields'), 'warning');
             return;
         }
 
@@ -112,7 +114,7 @@ export default function ProfileFormScreen({ route, navigation }) {
 
             const payload = {
                 address,
-                dob: dob || undefined, // Send undefined if empty
+                dob: dob || undefined,
                 emergencyContact,
                 medical,
                 pregnancy
@@ -122,16 +124,16 @@ export default function ProfileFormScreen({ route, navigation }) {
             const { response, data } = await apiPutAuth('/user/profile', payload, token);
 
             if (response.ok) {
-                showFlash('Profile updated successfully!', 'success');
+                showFlash(t('profileForm.profileUpdated'), 'success');
                 setTimeout(() => {
                     goBackOrHome();
                 }, 800);
             } else {
-                showFlash(data.message || 'Failed to update profile', 'error');
+                showFlash(data.message || t('profileForm.failedToUpdate'), 'error');
             }
         } catch (error) {
             console.error('Profile update error:', error);
-            showFlash('Connection Error. Check your internet.', 'error');
+            showFlash(t('profileForm.connectionError'), 'error');
         } finally {
             setLoading(false);
         }
@@ -151,26 +153,29 @@ export default function ProfileFormScreen({ route, navigation }) {
                     keyboardShouldPersistTaps="handled"
                 >
                     <View style={styles.headerContainer}>
-                        <Text style={styles.title}>{route?.params?.fromProfile ? "Edit Your Profile" : "Complete Your Profile"}</Text>
-                        <Text style={styles.subtitle}>Help us give you a better personalized experience. Basic Info and core Pregnancy fields are mandatory.</Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Text style={[styles.title, { flex: 1 }]}>{route?.params?.fromProfile ? t('profileForm.editProfile') : t('profileForm.completeProfile')}</Text>
+                            <LanguageToggle />
+                        </View>
+                        <Text style={styles.subtitle}>{t('profileForm.subtitle')}</Text>
                     </View>
 
                     <View style={styles.formContainer}>
-                        
-                        <Text style={styles.sectionTitle}>Basic Information</Text>
-                        
+
+                        <Text style={styles.sectionTitle}>{t('profileForm.basicInformation')}</Text>
+
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Address</Text>
-                            <TextInput style={styles.input} placeholder="Enter your full address" placeholderTextColor="#94a3b8" value={address} onChangeText={setAddress} />
+                            <Text style={styles.label}>{t('profileForm.address')}</Text>
+                            <TextInput style={styles.input} placeholder={t('profileForm.addressPlaceholder')} placeholderTextColor="#94a3b8" value={address} onChangeText={setAddress} />
                         </View>
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Date of Birth</Text>
+                            <Text style={styles.label}>{t('profileForm.dateOfBirth')}</Text>
                             {Platform.OS === 'web' ? (
                                 <TextInput style={styles.input} placeholder="e.g. 1990-01-25 (YYYY-MM-DD)" placeholderTextColor="#94a3b8" keyboardType="numbers-and-punctuation" value={dob} onChangeText={setDob} />
                             ) : (
                                 <>
                                     <TouchableOpacity onPress={() => setShowDobPicker(true)} style={[styles.input, { justifyContent: 'center' }]}>
-                                        <Text style={{ fontSize: 16, color: dob ? '#3D1A26' : '#DEB8C8' }}>{dob || "Select your date of birth"}</Text>
+                                        <Text style={{ fontSize: 16, color: dob ? '#3D1A26' : '#DEB8C8' }}>{dob || t('profileForm.selectDob')}</Text>
                                     </TouchableOpacity>
                                     {showDobPicker && (
                                         <DateTimePicker
@@ -188,20 +193,20 @@ export default function ProfileFormScreen({ route, navigation }) {
                             )}
                         </View>
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Emergency Contact</Text>
-                            <TextInput style={styles.input} placeholder="Emergency phone number" placeholderTextColor="#94a3b8" keyboardType="phone-pad" value={emergencyContact} onChangeText={setEmergencyContact} />
+                            <Text style={styles.label}>{t('profileForm.emergencyContact')}</Text>
+                            <TextInput style={styles.input} placeholder={t('profileForm.emergencyPlaceholder')} placeholderTextColor="#94a3b8" keyboardType="phone-pad" value={emergencyContact} onChangeText={setEmergencyContact} />
                         </View>
 
-                        <Text style={styles.sectionTitle}>Pregnancy Details</Text>
+                        <Text style={styles.sectionTitle}>{t('profileForm.pregnancyDetails')}</Text>
 
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Last Menstrual Period (LMP) Date</Text>
+                            <Text style={styles.label}>{t('profileForm.lmpDate')}</Text>
                             {Platform.OS === 'web' ? (
                                 <TextInput style={styles.input} placeholder="e.g. 2023-01-15 (YYYY-MM-DD)" placeholderTextColor="#94a3b8" keyboardType="numbers-and-punctuation" value={lmp} onChangeText={setLmp} />
                             ) : (
                                 <>
                                     <TouchableOpacity onPress={() => setShowLmpPicker(true)} style={[styles.input, { justifyContent: 'center' }]}>
-                                        <Text style={{ fontSize: 16, color: lmp ? '#3D1A26' : '#DEB8C8' }}>{lmp || "Select LMP Date"}</Text>
+                                        <Text style={{ fontSize: 16, color: lmp ? '#3D1A26' : '#DEB8C8' }}>{lmp || t('profileForm.selectLmp')}</Text>
                                     </TouchableOpacity>
                                     {showLmpPicker && (
                                         <DateTimePicker
@@ -219,53 +224,53 @@ export default function ProfileFormScreen({ route, navigation }) {
                             )}
                         </View>
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Expected Due Date (Auto-calculated)</Text>
+                            <Text style={styles.label}>{t('profileForm.dueDate')}</Text>
                             <View style={[styles.input, { justifyContent: 'center', backgroundColor: '#FFE4EF' }]}>
-                                <Text style={{ fontSize: 16, color: dueDate ? '#3D1A26' : '#DEB8C8' }}>{dueDate || "Determined by LMP Date"}</Text>
+                                <Text style={{ fontSize: 16, color: dueDate ? '#3D1A26' : '#DEB8C8' }}>{dueDate || t('profileForm.dueDatePlaceholder')}</Text>
                             </View>
                         </View>
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Current Trimester (1, 2, or 3)</Text>
+                            <Text style={styles.label}>{t('profileForm.trimester')}</Text>
                             <TextInput style={styles.input} placeholder="e.g. 1" placeholderTextColor="#94a3b8" keyboardType="number-pad" value={trimester} onChangeText={setTrimester} />
                         </View>
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Blood Group</Text>
+                            <Text style={styles.label}>{t('profileForm.bloodGroup')}</Text>
                             <TextInput style={styles.input} placeholder="e.g. O+, A-, etc." placeholderTextColor="#94a3b8" value={bloodGroup} onChangeText={setBloodGroup} />
                         </View>
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Previous Pregnancies</Text>
+                            <Text style={styles.label}>{t('profileForm.previousPregnancies')}</Text>
                             <TextInput style={styles.input} placeholder="e.g. 0, 1, 2" placeholderTextColor="#94a3b8" keyboardType="number-pad" value={previousPregnancies} onChangeText={setPreviousPregnancies} />
                         </View>
                         <View style={[styles.inputContainer, { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
-                            <Text style={styles.label}>High-Risk Pregnancy?</Text>
+                            <Text style={styles.label}>{t('profileForm.highRisk')}</Text>
                             <Switch value={highRisk} onValueChange={setHighRisk} trackColor={{ false: "#FFD6E8", true: "#F43F8A" }} thumbColor={highRisk ? "#fff" : "#fff"} />
                         </View>
 
-                        <Text style={styles.sectionTitle}>Medical Information</Text>
+                        <Text style={styles.sectionTitle}>{t('profileForm.medicalInfo')}</Text>
 
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Medical Conditions (Comma separated)</Text>
+                            <Text style={styles.label}>{t('profileForm.conditions')}</Text>
                             <TextInput style={styles.input} placeholder="e.g. Diabetes, Asthma" placeholderTextColor="#94a3b8" value={conditions} onChangeText={setConditions} />
                         </View>
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Allergies (Comma separated)</Text>
+                            <Text style={styles.label}>{t('profileForm.allergies')}</Text>
                             <TextInput style={styles.input} placeholder="e.g. Peanuts, Penicillin" placeholderTextColor="#94a3b8" value={allergies} onChangeText={setAllergies} />
                         </View>
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Previous Complications (Comma separated)</Text>
+                            <Text style={styles.label}>{t('profileForm.complications')}</Text>
                             <TextInput style={styles.input} placeholder="e.g. Gestational Diabetes" placeholderTextColor="#94a3b8" value={complications} onChangeText={setComplications} />
                         </View>
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Current Medications (Comma separated)</Text>
+                            <Text style={styles.label}>{t('profileForm.medications')}</Text>
                             <TextInput style={styles.input} placeholder="e.g. Prenatal Vitamins" placeholderTextColor="#94a3b8" value={medications} onChangeText={setMedications} />
                         </View>
 
                         <TouchableOpacity style={[styles.submitButton, { minHeight: MIN_TOUCH_TARGET, justifyContent: 'center' }]} onPress={handleSubmit} activeOpacity={0.8} disabled={loading}>
-                            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.submitButtonText}>Save Details</Text>}
+                            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.submitButtonText}>{t('profileForm.saveDetails')}</Text>}
                         </TouchableOpacity>
 
                         <TouchableOpacity style={[styles.skipButton, { minHeight: MIN_TOUCH_TARGET, justifyContent: 'center' }]} onPress={handleSkip} activeOpacity={0.8} disabled={loading}>
-                            <Text style={styles.skipButtonText}>{route?.params?.fromProfile ? "Cancel" : "Skip for now"}</Text>
+                            <Text style={styles.skipButtonText}>{route?.params?.fromProfile ? t('profileForm.cancel') : t('profileForm.skipForNow')}</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

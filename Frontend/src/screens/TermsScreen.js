@@ -9,12 +9,16 @@ import {
     StyleSheet
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
+import LanguageToggle from '../components/LanguageToggle';
 
 export default function TermsScreen({ navigation }) {
+    const { t } = useTranslation();
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-            
+
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity
@@ -22,10 +26,10 @@ export default function TermsScreen({ navigation }) {
                     onPress={() => navigation.goBack()}
                 >
                     <FontAwesome name="chevron-left" size={14} color="#F43F8A" />
-                    <Text style={styles.backText}>Back</Text>
+                    <Text style={styles.backText}>{t('terms.back')}</Text>
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>Terms and Conditions</Text>
-                <View style={{ width: 60 }} /> {/* invisible element for balanced centering */}
+                <Text style={styles.headerTitle}>{t('terms.headerTitle')}</Text>
+                <LanguageToggle />
             </View>
 
             {/* Content */}
@@ -35,176 +39,140 @@ export default function TermsScreen({ navigation }) {
                 showsVerticalScrollIndicator={false}
             >
                 <Text style={styles.heroTitle}>
-                    Maternal Health Care{'\n'}Monitoring System
+                    {t('terms.heroTitle')}
                 </Text>
-                
+
                 <Text style={styles.introText}>
-                    The following Terms and Conditions govern the use of the Maternal Health Care Monitoring and Reminder System (“the Platform”). By registering, accessing, or using the Platform, the user agrees to comply with these Terms.
+                    {t('terms.introText')}
                 </Text>
 
+                {/* Section 1 */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>1. Purpose of the Platform</Text>
-                    <Text style={styles.paragraph}>
-                        The Platform is a digital health monitoring and reminder system designed to assist pregnant women, parents, doctors, and administrators in managing maternal and child vaccination schedules and related health records.
-                    </Text>
-                    <Text style={styles.paragraph}>
-                        The Platform is intended to provide organizational support and automated reminders. It does not function as a medical diagnostic or treatment system.
-                    </Text>
+                    <Text style={styles.sectionTitle}>{t('terms.section1Title')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section1P1')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section1P2')}</Text>
                 </View>
 
+                {/* Section 2 */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>2. Voluntary Registration and Consent</Text>
-                    <Text style={styles.paragraph}>
-                        Registration on the Platform requires submission of certain personal and medical details, including but not limited to:
-                    </Text>
+                    <Text style={styles.sectionTitle}>{t('terms.section2Title')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section2P1')}</Text>
                     <View style={styles.bulletList}>
-                        <Text style={styles.bulletItem}>• Name and contact information</Text>
-                        <Text style={styles.bulletItem}>• Pregnancy-related data (LMP, Expected Due Date, trimester details)</Text>
-                        <Text style={styles.bulletItem}>• Medical history and high-risk status</Text>
-                        <Text style={styles.bulletItem}>• Vaccination records</Text>
-                        <Text style={styles.bulletItem}>• Doctor or hospital information</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section2B1')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section2B2')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section2B3')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section2B4')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section2B5')}</Text>
                     </View>
-                    <Text style={styles.paragraph}>
-                        By submitting such information, the user confirms that:
-                    </Text>
+                    <Text style={styles.paragraph}>{t('terms.section2P2')}</Text>
                     <View style={styles.bulletList}>
-                        <Text style={styles.bulletItem}>• The information is provided voluntarily.</Text>
-                        <Text style={styles.bulletItem}>• The information is accurate to the best of their knowledge.</Text>
-                        <Text style={styles.bulletItem}>• They have authority and consent to enter data for any dependent individual (such as a newborn).</Text>
-                        <Text style={styles.bulletItem}>• They understand that the data will be stored digitally for scheduling and reminder purposes.</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section2B6')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section2B7')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section2B8')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section2B9')}</Text>
                     </View>
-                    <Text style={styles.paragraph}>
-                        Use of the Platform constitutes informed consent for digital processing and storage of the submitted information.
-                    </Text>
+                    <Text style={styles.paragraph}>{t('terms.section2P3')}</Text>
                 </View>
 
+                {/* Section 3 */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>3. Nature of Medical Information</Text>
-                    <Text style={styles.paragraph}>
-                        The pregnancy guide, vaccination schedules, abnormal signs, and health-related content provided within the Platform are based on commonly available medical references and general healthcare guidelines.
-                    </Text>
-                    <Text style={styles.paragraph}>
-                        The Platform:
-                    </Text>
+                    <Text style={styles.sectionTitle}>{t('terms.section3Title')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section3P1')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section3P2')}</Text>
                     <View style={styles.bulletList}>
-                        <Text style={styles.bulletItem}>• Does not provide medical diagnosis.</Text>
-                        <Text style={styles.bulletItem}>• Does not prescribe treatment.</Text>
-                        <Text style={styles.bulletItem}>• Does not replace professional medical consultation.</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section3B1')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section3B2')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section3B3')}</Text>
                     </View>
-                    <Text style={styles.paragraph}>
-                        Users must consult qualified healthcare professionals for all medical decisions.
-                    </Text>
-                    <Text style={styles.paragraph}>
-                        The developers, project members, faculty supervisor, and institution shall not be responsible for any medical outcomes arising from reliance on the Platform.
-                    </Text>
+                    <Text style={styles.paragraph}>{t('terms.section3P3')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section3P4')}</Text>
                 </View>
 
+                {/* Section 4 */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>4. Automated Schedule and Reminder System</Text>
-                    <Text style={styles.paragraph}>
-                        The Platform automatically generates:
-                    </Text>
+                    <Text style={styles.sectionTitle}>{t('terms.section4Title')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section4P1')}</Text>
                     <View style={styles.bulletList}>
-                        <Text style={styles.bulletItem}>• Vaccination schedules</Text>
-                        <Text style={styles.bulletItem}>• Trimester calculations</Text>
-                        <Text style={styles.bulletItem}>• Reminder notifications (7 days before and on due date)</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section4B1')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section4B2')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section4B3')}</Text>
                     </View>
-                    <Text style={styles.paragraph}>
-                        These outputs are based entirely on user-entered data.
-                    </Text>
-                    <Text style={styles.paragraph}>
-                        Reminder notifications may be delivered through:
-                    </Text>
+                    <Text style={styles.paragraph}>{t('terms.section4P2')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section4P3')}</Text>
                     <View style={styles.bulletList}>
-                        <Text style={styles.bulletItem}>• In-app alerts</Text>
-                        <Text style={styles.bulletItem}>• Alarm notifications</Text>
-                        <Text style={styles.bulletItem}>• SMS services</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section4B4')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section4B5')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section4B6')}</Text>
                     </View>
-                    <Text style={styles.paragraph}>
-                        Delivery of reminders depends on internet connectivity, device settings, server functionality, and third-party communication services. The Platform does not guarantee uninterrupted or error-free reminder delivery.
-                    </Text>
+                    <Text style={styles.paragraph}>{t('terms.section4P4')}</Text>
                 </View>
 
+                {/* Section 5 */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>5. User Responsibilities</Text>
-                    <Text style={styles.paragraph}>Users agree to:</Text>
+                    <Text style={styles.sectionTitle}>{t('terms.section5Title')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section5P1')}</Text>
                     <View style={styles.bulletList}>
-                        <Text style={styles.bulletItem}>• Enter accurate and complete information.</Text>
-                        <Text style={styles.bulletItem}>• Maintain confidentiality of login credentials.</Text>
-                        <Text style={styles.bulletItem}>• Not create false records.</Text>
-                        <Text style={styles.bulletItem}>• Not attempt unauthorized access to system data.</Text>
-                        <Text style={styles.bulletItem}>• Not use automated tools, bots, or scripts to manipulate the Platform.</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section5B1')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section5B2')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section5B3')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section5B4')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section5B5')}</Text>
                     </View>
-                    <Text style={styles.paragraph}>
-                        Users are responsible for verifying all medical dates and vaccination schedules with their healthcare provider.
-                    </Text>
+                    <Text style={styles.paragraph}>{t('terms.section5P2')}</Text>
                 </View>
 
+                {/* Section 6 */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>6. Data Storage and Security</Text>
-                    <Text style={styles.paragraph}>
-                        The Platform stores data in a structured digital database and implements authentication and access control mechanisms to protect user information.
-                    </Text>
-                    <Text style={styles.paragraph}>
-                        While reasonable technical safeguards are applied, absolute data security cannot be guaranteed due to potential technical failures or cybersecurity risks.
-                    </Text>
-                    <Text style={styles.paragraph}>
-                        The Platform shall not be held liable for data loss, unauthorized access, or system interruptions beyond reasonable control.
-                    </Text>
+                    <Text style={styles.sectionTitle}>{t('terms.section6Title')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section6P1')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section6P2')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section6P3')}</Text>
                 </View>
 
+                {/* Section 7 */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>7. Intellectual Property</Text>
-                    <Text style={styles.paragraph}>
-                        All system architecture, database structure, user interface design, workflow logic, and documentation belong to the project developers.
-                    </Text>
-                    <Text style={styles.paragraph}>
-                        Users may not copy, reproduce, modify, reverse engineer, or commercially exploit any part of the Platform without permission.
-                    </Text>
+                    <Text style={styles.sectionTitle}>{t('terms.section7Title')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section7P1')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section7P2')}</Text>
                 </View>
 
+                {/* Section 8 */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>8. Limitation of Liability</Text>
-                    <Text style={styles.paragraph}>
-                        Under no circumstances shall the developers, project team members, faculty supervisor, institution, administrators, or affiliated individuals be liable for:
-                    </Text>
+                    <Text style={styles.sectionTitle}>{t('terms.section8Title')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section8P1')}</Text>
                     <View style={styles.bulletList}>
-                        <Text style={styles.bulletItem}>• Medical complications</Text>
-                        <Text style={styles.bulletItem}>• Missed vaccinations</Text>
-                        <Text style={styles.bulletItem}>• Health deterioration</Text>
-                        <Text style={styles.bulletItem}>• Vaccine reactions</Text>
-                        <Text style={styles.bulletItem}>• Incorrect schedule generation due to wrong input</Text>
-                        <Text style={styles.bulletItem}>• Reminder delivery failure</Text>
-                        <Text style={styles.bulletItem}>• Technical malfunctions</Text>
-                        <Text style={styles.bulletItem}>• Indirect or consequential damages</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section8B1')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section8B2')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section8B3')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section8B4')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section8B5')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section8B6')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section8B7')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section8B8')}</Text>
                     </View>
-                    <Text style={styles.paragraph}>
-                        Use of the Platform is entirely at the user’s own discretion and risk.
-                    </Text>
+                    <Text style={styles.paragraph}>{t('terms.section8P2')}</Text>
                 </View>
 
+                {/* Section 9 */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>9. Suspension or Termination</Text>
-                    <Text style={styles.paragraph}>
-                        The Platform reserves the right to suspend or terminate access if a user:
-                    </Text>
+                    <Text style={styles.sectionTitle}>{t('terms.section9Title')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section9P1')}</Text>
                     <View style={styles.bulletList}>
-                        <Text style={styles.bulletItem}>• Violates these Terms</Text>
-                        <Text style={styles.bulletItem}>• Misuses the system</Text>
-                        <Text style={styles.bulletItem}>• Provides false or misleading information</Text>
-                        <Text style={styles.bulletItem}>• Attempts to breach system security</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section9B1')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section9B2')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section9B3')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section9B4')}</Text>
                     </View>
                 </View>
 
+                {/* Section 10 */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>10. Acceptance of Terms</Text>
-                    <Text style={styles.paragraph}>
-                        By creating an account or using the Platform, the user confirms that:
-                    </Text>
+                    <Text style={styles.sectionTitle}>{t('terms.section10Title')}</Text>
+                    <Text style={styles.paragraph}>{t('terms.section10P1')}</Text>
                     <View style={styles.bulletList}>
-                        <Text style={styles.bulletItem}>• They have read and understood these Terms and Conditions.</Text>
-                        <Text style={styles.bulletItem}>• They voluntarily agree to comply with them.</Text>
-                        <Text style={styles.bulletItem}>• They acknowledge that the Platform is a monitoring and reminder tool only.</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section10B1')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section10B2')}</Text>
+                        <Text style={styles.bulletItem}>{t('terms.section10B3')}</Text>
                     </View>
                 </View>
 

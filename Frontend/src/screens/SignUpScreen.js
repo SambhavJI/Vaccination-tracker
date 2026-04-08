@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import LanguageToggle from '../components/LanguageToggle';
 import {
     StyleSheet,
     Text,
@@ -30,6 +32,7 @@ const MIN_TOUCH_TARGET = 44;
 
 export default function SignUpScreen({ route, navigation }) {
     const { showFlash } = useFlash();
+    const { t } = useTranslation();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -42,12 +45,12 @@ export default function SignUpScreen({ route, navigation }) {
 
     const handleSignUp = async () => {
         if (!name || !email || !password || !confirmPassword || !phone) {
-            showFlash('Please fill in all fields', 'warning');
+            showFlash(t('signUp.fillFields'), 'warning');
             return;
         }
 
         if (password !== confirmPassword) {
-            showFlash('Passwords do not match', 'error');
+            showFlash(t('signUp.passwordMismatch'), 'error');
             return;
         }
         setLoading(true);
@@ -63,7 +66,7 @@ export default function SignUpScreen({ route, navigation }) {
                         await AsyncStorage.setItem('userName', loginData.user.name);
                     }
                     console.log('Auto-login successful, redirecting to profile form...');
-                    showFlash('Account created and logged in automatically!', 'success');
+                    showFlash(t('signUp.accountCreated'), 'success');
                     setTimeout(() => {
                         navigation.reset({
                             index: 0,
@@ -71,7 +74,7 @@ export default function SignUpScreen({ route, navigation }) {
                         });
                     }, 800);
                 } else {
-                    showFlash('Account created successfully! Please log in.', 'success');
+                    showFlash(t('signUp.accountCreatedLogin'), 'success');
                     navigation.navigate('Login');
                 }
             } else {
@@ -79,7 +82,7 @@ export default function SignUpScreen({ route, navigation }) {
             }
         } catch (error) {
             console.error('Sign up error:', error);
-            showFlash('Connection Error. Check your internet.', 'error');
+            showFlash(t('signUp.connectionError'), 'error');
         } finally {
             setLoading(false);
         }
@@ -98,19 +101,22 @@ export default function SignUpScreen({ route, navigation }) {
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps="handled"
                 >
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                        <Text style={styles.backButtonText}>← Back</Text>
-                    </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+                            <Text style={styles.backButtonText}>{t('common.back')}</Text>
+                        </TouchableOpacity>
+                        <LanguageToggle />
+                    </View>
 
                     <View style={[styles.headerContainer, isSmallScreen && styles.headerContainerSmall]}>
-                        <Text style={[styles.title, isSmallScreen && styles.titleSmall]}>Create Account</Text>
-                        <Text style={[styles.subtitle, isSmallScreen && styles.subtitleSmall]}>Join us to start tracking your vaccinations easily</Text>
+                        <Text style={[styles.title, isSmallScreen && styles.titleSmall]}>{t('signUp.createAccount')}</Text>
+                        <Text style={[styles.subtitle, isSmallScreen && styles.subtitleSmall]}>{t('signUp.subtitle')}</Text>
                     </View>
 
                     {showMissingUserAlert && (
                         <View style={styles.alertContainer}>
-                            <Text style={styles.alertTitle}>Ready to join?</Text>
-                            <Text style={styles.alertText}>We couldn't find an account with that phone number. Please sign up here first!</Text>
+                            <Text style={styles.alertTitle}>{t('signUp.readyToJoin')}</Text>
+                            <Text style={styles.alertText}>{t('signUp.noAccountFound')}</Text>
                             <TouchableOpacity onPress={() => setShowMissingUserAlert(false)} style={[styles.closeAlert, { minWidth: MIN_TOUCH_TARGET, minHeight: MIN_TOUCH_TARGET }]} activeOpacity={0.7}>
                                 <Text style={styles.closeAlertText}>✕</Text>
                             </TouchableOpacity>
@@ -119,10 +125,10 @@ export default function SignUpScreen({ route, navigation }) {
 
                     <View style={styles.formContainer}>
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Full Name</Text>
+                            <Text style={styles.label}>{t('signUp.fullName')}</Text>
                             <TextInput
                                 style={styles.input}
-                                placeholder="Enter your full name"
+                                placeholder={t('signUp.fullNamePlaceholder')}
                                 placeholderTextColor="#94a3b8"
                                 autoCapitalize="words"
                                 value={name}
@@ -131,10 +137,10 @@ export default function SignUpScreen({ route, navigation }) {
                         </View>
 
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Email</Text>
+                            <Text style={styles.label}>{t('signUp.email')}</Text>
                             <TextInput
                                 style={styles.input}
-                                placeholder="Enter your email"
+                                placeholder={t('signUp.emailPlaceholder')}
                                 placeholderTextColor="#94a3b8"
                                 keyboardType="email-address"
                                 autoCapitalize="none"
@@ -145,10 +151,10 @@ export default function SignUpScreen({ route, navigation }) {
                         </View>
 
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Phone Number</Text>
+                            <Text style={styles.label}>{t('signUp.phoneNumber')}</Text>
                             <TextInput
                                 style={styles.input}
-                                placeholder="Enter your phone number"
+                                placeholder={t('signUp.phonePlaceholder')}
                                 placeholderTextColor="#94a3b8"
                                 keyboardType="phone-pad"
                                 value={phone}
@@ -157,10 +163,10 @@ export default function SignUpScreen({ route, navigation }) {
                         </View>
 
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Password</Text>
+                            <Text style={styles.label}>{t('signUp.password')}</Text>
                             <TextInput
                                 style={styles.input}
-                                placeholder="Create a password"
+                                placeholder={t('signUp.passwordPlaceholder')}
                                 placeholderTextColor="#94a3b8"
                                 secureTextEntry
                                 value={password}
@@ -169,10 +175,10 @@ export default function SignUpScreen({ route, navigation }) {
                         </View>
 
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Confirm Password</Text>
+                            <Text style={styles.label}>{t('signUp.confirmPassword')}</Text>
                             <TextInput
                                 style={styles.input}
-                                placeholder="Confirm your password"
+                                placeholder={t('signUp.confirmPasswordPlaceholder')}
                                 placeholderTextColor="#94a3b8"
                                 secureTextEntry
                                 value={confirmPassword}
@@ -181,14 +187,14 @@ export default function SignUpScreen({ route, navigation }) {
                         </View>
 
                         <TouchableOpacity style={[styles.signupButton, { minHeight: MIN_TOUCH_TARGET, justifyContent: 'center' }]} onPress={handleSignUp} activeOpacity={0.8} disabled={loading}>
-                            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.signupButtonText}>Sign Up</Text>}
+                            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.signupButtonText}>{t('signUp.signUp')}</Text>}
                         </TouchableOpacity>
                     </View>
 
                     <View style={[styles.footerContainer, isSmallScreen && styles.footerContainerSmall]}>
-                        <Text style={styles.footerText}>Already have an account? </Text>
+                        <Text style={styles.footerText}>{t('signUp.alreadyAccount')}</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('Login')} style={{ minHeight: MIN_TOUCH_TARGET, justifyContent: 'center' }} activeOpacity={0.7}>
-                            <Text style={styles.loginText}>Log In</Text>
+                            <Text style={styles.loginText}>{t('signUp.logIn')}</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

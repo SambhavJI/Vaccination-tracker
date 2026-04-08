@@ -17,8 +17,11 @@ import {
 import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { apiPostAuth } from '../config/apiRequest';
+import { useTranslation } from 'react-i18next';
+import LanguageToggle from '../components/LanguageToggle';
 
 export default function RegisterChildScreen({ navigation }) {
+    const { t } = useTranslation();
     const [babyName, setBabyName] = useState('');
     const [dateOfBirth, setDateOfBirth] = useState(''); // Expected format: YYYY-MM-DD
     const [loading, setLoading] = useState(false);
@@ -27,13 +30,13 @@ export default function RegisterChildScreen({ navigation }) {
 
     const handleRegister = async () => {
         if (!babyName || !dateOfBirth) {
-            Alert.alert('Error', 'Please fill in all fields');
+            Alert.alert(t('registerChild.error'), t('registerChild.fillFields'));
             return;
         }
 
         const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
         if (!dateRegex.test(dateOfBirth)) {
-            Alert.alert('Error', 'Please enter date in YYYY-MM-DD format');
+            Alert.alert(t('registerChild.error'), t('registerChild.invalidDateFormat'));
             return;
         }
 
@@ -46,14 +49,14 @@ export default function RegisterChildScreen({ navigation }) {
             }, token);
 
             if (response.ok) {
-                Alert.alert('Success', 'Child registered and vaccines scheduled!');
+                Alert.alert(t('registerChild.success'), t('registerChild.registeredSuccess'));
                 navigation.replace('AfterLogin');
             } else {
-                Alert.alert('Registration Failed', data.message || 'Something went wrong');
+                Alert.alert(t('registerChild.registrationFailed'), data.message || t('registerChild.somethingWrong'));
             }
         } catch (error) {
             console.error('Registration error:', error);
-            Alert.alert('Error', 'Connection failed. Please check your network.');
+            Alert.alert(t('registerChild.error'), t('registerChild.connectionError'));
         } finally {
             setLoading(false);
         }
@@ -68,20 +71,23 @@ export default function RegisterChildScreen({ navigation }) {
             >
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
                     <View style={styles.headerContainer}>
-                        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                            <FontAwesome name="chevron-left" size={14} color="#F43F8A" />
-                            <Text style={styles.backButtonText}>Dashboard</Text>
-                        </TouchableOpacity>
-                        <Text style={[styles.title, isSmallScreen && { fontSize: 24 }]}>Register Child</Text>
-                        <Text style={styles.subtitle}>Enter your child's details to schedule vaccinations</Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+                                <FontAwesome name="chevron-left" size={14} color="#F43F8A" />
+                                <Text style={styles.backButtonText}>{t('registerChild.dashboard')}</Text>
+                            </TouchableOpacity>
+                            <LanguageToggle />
+                        </View>
+                        <Text style={[styles.title, isSmallScreen && { fontSize: 24 }]}>{t('registerBaby.title')}</Text>
+                        <Text style={styles.subtitle}>{t('registerBaby.subtitle')}</Text>
                     </View>
 
                     <View style={styles.formContainer}>
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Child's Name</Text>
+                            <Text style={styles.label}>{t('registerBaby.childName')}</Text>
                             <TextInput
                                 style={styles.input}
-                                placeholder="e.g. Aarav"
+                                placeholder={t('registerBaby.childNamePlaceholder')}
                                 placeholderTextColor="#94a3b8"
                                 value={babyName}
                                 onChangeText={setBabyName}
@@ -89,10 +95,10 @@ export default function RegisterChildScreen({ navigation }) {
                         </View>
 
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Date of Birth (YYYY-MM-DD)</Text>
+                            <Text style={styles.label}>{t('registerBaby.dateOfBirth')}</Text>
                             <TextInput
                                 style={styles.input}
-                                placeholder="2024-01-15"
+                                placeholder={t('registerBaby.dateOfBirthPlaceholder')}
                                 placeholderTextColor="#94a3b8"
                                 value={dateOfBirth}
                                 onChangeText={setDateOfBirth}
@@ -105,7 +111,7 @@ export default function RegisterChildScreen({ navigation }) {
                             onPress={handleRegister}
                             disabled={loading}
                         >
-                            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.registerButtonText}>Register & Schedule</Text>}
+                            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.registerButtonText}>{t('registerChild.registerAndSchedule')}</Text>}
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

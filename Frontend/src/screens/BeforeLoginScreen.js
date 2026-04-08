@@ -11,8 +11,12 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { landingStyles } from '../styles/landingStyles';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
+import LanguageToggle from '../components/LanguageToggle';
 
 export default function BeforeLoginScreen({ navigation }) {
+    const { t } = useTranslation();
+
     useEffect(() => {
         const checkAuth = async () => {
             const token = await AsyncStorage.getItem('userToken');
@@ -25,14 +29,18 @@ export default function BeforeLoginScreen({ navigation }) {
         <SafeAreaView style={landingStyles.safeArea}>
             <StatusBar barStyle="dark-content" backgroundColor="#FFF0F5" />
             <ScrollView style={landingStyles.container} showsVerticalScrollIndicator={false} bounces={false}>
+                {/* Language Toggle */}
+                <View style={{ paddingHorizontal: 20, paddingTop: 12 }}>
+                    <LanguageToggle />
+                </View>
+
                 {/* HERO SECTION */}
                 <View style={landingStyles.heroSection}>
-                    {/* Removed Badge */}
                     <Text style={landingStyles.heroTitle}>
-                        Track Your Baby's{'\n'}Journey with <Text style={landingStyles.highlight}>Confidence</Text>
+                        {t('beforeLogin.heroTitle')}<Text style={landingStyles.highlight}>{t('beforeLogin.heroHighlight')}</Text>
                     </Text>
                     <Text style={landingStyles.heroSubtitle}>
-                        Never miss a vaccine. Get timely reminders, expert guidance, and growth tracking — all in one modern app.
+                        {t('beforeLogin.heroSubtitle')}
                     </Text>
 
                     <View style={landingStyles.heroImageContainer}>
@@ -47,7 +55,7 @@ export default function BeforeLoginScreen({ navigation }) {
                 {/* FEATURES SECTION */}
                 <View style={landingStyles.section}>
                     <View style={landingStyles.sectionHeader}>
-                        <Text style={landingStyles.sectionTitle}>Why Mothers Trust Us</Text>
+                        <Text style={landingStyles.sectionTitle}>{t('beforeLogin.whyTrust')}</Text>
                     </View>
 
                     <View style={landingStyles.gridContainer}>
@@ -56,8 +64,8 @@ export default function BeforeLoginScreen({ navigation }) {
                             <View style={[landingStyles.iconContainer, { backgroundColor: '#FFD6E8' }]}>
                                 <Feather name="bell" size={20} color="#F43F8A" />
                             </View>
-                            <Text style={landingStyles.cardTitle}>Smart Alerts</Text>
-                            <Text style={landingStyles.cardText}>Timely reminders for upcoming vaccines.</Text>
+                            <Text style={landingStyles.cardTitle}>{t('beforeLogin.smartAlerts')}</Text>
+                            <Text style={landingStyles.cardText}>{t('beforeLogin.smartAlertsDesc')}</Text>
                         </View>
 
                         {/* Card 2 */}
@@ -65,8 +73,8 @@ export default function BeforeLoginScreen({ navigation }) {
                             <View style={[landingStyles.iconContainer, { backgroundColor: '#FFE9F3' }]}>
                                 <Feather name="trending-up" size={20} color="#E91E8C" />
                             </View>
-                            <Text style={landingStyles.cardTitle}>Growth Tracking</Text>
-                            <Text style={landingStyles.cardText}>Monitor your baby's development.</Text>
+                            <Text style={landingStyles.cardTitle}>{t('beforeLogin.growthTracking')}</Text>
+                            <Text style={landingStyles.cardText}>{t('beforeLogin.growthTrackingDesc')}</Text>
                         </View>
 
                         {/* Card 3 */}
@@ -74,8 +82,8 @@ export default function BeforeLoginScreen({ navigation }) {
                             <View style={[landingStyles.iconContainer, { backgroundColor: '#FFF0F5' }]}>
                                 <MaterialCommunityIcons name="book-open-page-variant-outline" size={22} color="#FF82B2" />
                             </View>
-                            <Text style={landingStyles.cardTitle}>Basic Info</Text>
-                            <Text style={landingStyles.cardText}>Essential guides for your baby's health.</Text>
+                            <Text style={landingStyles.cardTitle}>{t('beforeLogin.basicInfo')}</Text>
+                            <Text style={landingStyles.cardText}>{t('beforeLogin.basicInfoDesc')}</Text>
                         </View>
 
                         {/* Card 4 */}
@@ -83,8 +91,8 @@ export default function BeforeLoginScreen({ navigation }) {
                             <View style={[landingStyles.iconContainer, { backgroundColor: '#FFD6E8' }]}>
                                 <Feather name="lock" size={20} color="#F43F8A" />
                             </View>
-                            <Text style={landingStyles.cardTitle}>Secure Data</Text>
-                            <Text style={landingStyles.cardText}>Your family's privacy is our top priority.</Text>
+                            <Text style={landingStyles.cardTitle}>{t('beforeLogin.secureData')}</Text>
+                            <Text style={landingStyles.cardText}>{t('beforeLogin.secureDataDesc')}</Text>
                         </View>
                     </View>
                 </View>
@@ -96,7 +104,7 @@ export default function BeforeLoginScreen({ navigation }) {
                         onPress={() => navigation.navigate('SignUp')}
                         activeOpacity={0.8}
                     >
-                        <Text style={landingStyles.signupButtonText}>Create Free Account</Text>
+                        <Text style={landingStyles.signupButtonText}>{t('beforeLogin.createAccount')}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
@@ -104,16 +112,16 @@ export default function BeforeLoginScreen({ navigation }) {
                         onPress={() => navigation.navigate('Login')}
                         activeOpacity={0.6}
                     >
-                        <Text style={landingStyles.loginButtonText}>Log In</Text>
+                        <Text style={landingStyles.loginButtonText}>{t('beforeLogin.logIn')}</Text>
                     </TouchableOpacity>
 
                     {/* FOOTER */}
                     <View style={landingStyles.footer}>
-                        <Text style={landingStyles.footerText}>Data Secured • Pediatric Approved</Text>
+                        <Text style={landingStyles.footerText}>{t('beforeLogin.dataSecured')}</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('Terms')} activeOpacity={0.7}>
-                            <Text style={[landingStyles.footerText, { textDecorationLine: 'underline' }]}>Terms And Conditions</Text>
+                            <Text style={[landingStyles.footerText, { textDecorationLine: 'underline' }]}>{t('beforeLogin.termsAndConditions')}</Text>
                         </TouchableOpacity>
-                        <Text style={landingStyles.footerTextSmall}>© 2026 Healthy Mom & Baby</Text>
+                        <Text style={landingStyles.footerTextSmall}>{t('beforeLogin.copyright')}</Text>
                     </View>
                 </View>
             </ScrollView>

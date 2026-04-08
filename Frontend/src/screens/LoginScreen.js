@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import LanguageToggle from '../components/LanguageToggle';
 import {
     StyleSheet,
     Text,
@@ -30,6 +32,7 @@ const MIN_TOUCH_TARGET = 44;
 
 export default function LoginScreen({ navigation }) {
     const { showFlash } = useFlash();
+    const { t } = useTranslation();
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -38,7 +41,7 @@ export default function LoginScreen({ navigation }) {
 
     const handleLogin = async () => {
         if (!phone || !password) {
-            showFlash('Please fill in all fields', 'warning');
+            showFlash(t('login.fillFields'), 'warning');
             return;
         }
         setLoading(true);
@@ -61,16 +64,16 @@ export default function LoginScreen({ navigation }) {
                     });
                 }, 800);
             } else if (response.status === 404) {
-                showFlash('Account Not Found. Redirecting to Sign Up...', 'info');
+                showFlash(t('login.accountNotFound'), 'info');
                 setTimeout(() => {
                     navigation.navigate('SignUp', { showSignUpAlert: true });
                 }, 1500);
             } else {
-                showFlash(data.message || 'Invalid credentials', 'error');
+                showFlash(data.message || t('login.invalidCredentials'), 'error');
             }
         } catch (error) {
             console.error('Login error:', error);
-            showFlash('Connection Error. Please check your internet.', 'error');
+            showFlash(t('login.connectionError'), 'error');
         } finally {
             setLoading(false);
         }
@@ -90,21 +93,24 @@ export default function LoginScreen({ navigation }) {
                     keyboardShouldPersistTaps="handled"
                     bounces={false}
                 >
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                        <Text style={styles.backButtonText}>← Back</Text>
-                    </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+                            <Text style={styles.backButtonText}>{t('common.back')}</Text>
+                        </TouchableOpacity>
+                        <LanguageToggle />
+                    </View>
 
                     <View style={[styles.headerContainer, isSmallScreen && styles.headerContainerSmall]}>
-                        <Text style={[styles.title, isSmallScreen && styles.titleSmall]}>Welcome Back</Text>
-                        <Text style={[styles.subtitle, isSmallScreen && styles.subtitleSmall]}>Sign in to continue your vaccination journey</Text>
+                        <Text style={[styles.title, isSmallScreen && styles.titleSmall]}>{t('login.welcomeBack')}</Text>
+                        <Text style={[styles.subtitle, isSmallScreen && styles.subtitleSmall]}>{t('login.subtitle')}</Text>
                     </View>
 
                     <View style={styles.formContainer}>
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Phone Number</Text>
+                            <Text style={styles.label}>{t('login.phoneNumber')}</Text>
                             <TextInput
                                 style={styles.input}
-                                placeholder="Enter your phone number"
+                                placeholder={t('login.phonePlaceholder')}
                                 placeholderTextColor="#94a3b8"
                                 keyboardType="phone-pad"
                                 autoCapitalize="none"
@@ -114,10 +120,10 @@ export default function LoginScreen({ navigation }) {
                         </View>
 
                         <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Password</Text>
+                            <Text style={styles.label}>{t('login.password')}</Text>
                             <TextInput
                                 style={styles.input}
-                                placeholder="Enter your password"
+                                placeholder={t('login.passwordPlaceholder')}
                                 placeholderTextColor="#94a3b8"
                                 secureTextEntry
                                 value={password}
@@ -126,18 +132,18 @@ export default function LoginScreen({ navigation }) {
                         </View>
 
                         <TouchableOpacity style={[styles.forgotPassword, { minHeight: MIN_TOUCH_TARGET, justifyContent: 'center' }]} activeOpacity={0.7}>
-                            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+                            <Text style={styles.forgotPasswordText}>{t('login.forgotPassword')}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={[styles.loginButton, { minHeight: MIN_TOUCH_TARGET, justifyContent: 'center' }]} onPress={handleLogin} activeOpacity={0.8} disabled={loading}>
-                            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.loginButtonText}>Log In</Text>}
+                            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.loginButtonText}>{t('login.logIn')}</Text>}
                         </TouchableOpacity>
                     </View>
 
                     <View style={[styles.footerContainer, isSmallScreen && styles.footerContainerSmall]}>
-                        <Text style={styles.footerText}>Don't have an account? </Text>
+                        <Text style={styles.footerText}>{t('login.noAccount')}</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('SignUp')} style={{ minHeight: MIN_TOUCH_TARGET, justifyContent: 'center' }} activeOpacity={0.7}>
-                            <Text style={styles.signupText}>Sign Up</Text>
+                            <Text style={styles.signupText}>{t('login.signUp')}</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
