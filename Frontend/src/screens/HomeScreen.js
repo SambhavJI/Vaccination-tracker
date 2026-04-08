@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import LanguageToggle from '../components/LanguageToggle';
 import {
     StyleSheet,
     Text,
@@ -11,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeScreen({ navigation }) {
     const [userName, setUserName] = useState('');
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchUserName = async () => {
@@ -42,16 +45,19 @@ export default function HomeScreen({ navigation }) {
             <StatusBar barStyle="dark-content" backgroundColor="#FFF0F5" />
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.greeting}>Welcome,</Text>
-                    <Text style={styles.name}>{userName || 'Patient'}</Text>
+                    <View style={{ flex: 1 }}>
+                        <Text style={styles.greeting}>{t('home.welcome')}</Text>
+                        <Text style={styles.name}>{userName || t('home.defaultUser')}</Text>
+                    </View>
+                    <LanguageToggle />
                 </View>
 
                 <View style={styles.content}>
-                    <Text style={styles.subtitle}>Your vaccination tracking dashboard will appear here.</Text>
+                    <Text style={styles.subtitle}>{t('home.dashboardSubtitle')}</Text>
                 </View>
 
                 <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-                    <Text style={styles.logoutButtonText}>Log Out</Text>
+                    <Text style={styles.logoutButtonText}>{t('common.logOut')}</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>

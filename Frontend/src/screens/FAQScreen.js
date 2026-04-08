@@ -9,22 +9,25 @@ import {
     StyleSheet
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import LanguageToggle from '../components/LanguageToggle';
+import { useTranslation } from 'react-i18next';
 
 export default function FAQScreen({ navigation }) {
+    const { t } = useTranslation();
 
     const [activeFilter, setActiveFilter] = useState("all");
     const [openIndex, setOpenIndex] = useState(null);
 
     const faqData = [
-        { q: "How can a user register in the system?", a: "Fill signup form with name, email, phone, password.", category: "registration" },
-        { q: "What information is required during registration?", a: "Name, email, phone number and password.", category: "registration" },
-        { q: "Can I update my profile details?", a: "Yes, You can navigate to the Profile section from the bottom navigation bar. The Edit option is available in the top-right corner of the screen.", category: "registration" },
-        { q: "How can I schedule a vaccination appointment?", a: "Select date and time slot from appointment section.", category: "appointment" },
-        { q: "Can I reschedule my reminder?", a: "Yes, with the plus sign availabe in reminder section", category: "appointment" },
-        { q: "Can I view my vaccination history?", a: "Yes, in dashboard.", category: "vaccination" },
-        { q: "Are reminders provided for vaccines?", a: "Yes, notifications are sent.", category: "schedule" },
-        { q: "Is user data secure?", a: "Yes, secured with authentication.", category: "general" },
-        { q: "Is internet required?", a: "Yes, internet is required.", category: "general" },
+        { q: t('faq.questions.q1'), a: t('faq.questions.a1'), category: "registration" },
+        { q: t('faq.questions.q2'), a: t('faq.questions.a2'), category: "registration" },
+        { q: t('faq.questions.q3'), a: t('faq.questions.a3'), category: "registration" },
+        { q: t('faq.questions.q4'), a: t('faq.questions.a4'), category: "appointment" },
+        { q: t('faq.questions.q5'), a: t('faq.questions.a5'), category: "appointment" },
+        { q: t('faq.questions.q6'), a: t('faq.questions.a6'), category: "vaccination" },
+        { q: t('faq.questions.q7'), a: t('faq.questions.a7'), category: "schedule" },
+        { q: t('faq.questions.q8'), a: t('faq.questions.a8'), category: "general" },
+        { q: t('faq.questions.q9'), a: t('faq.questions.a9'), category: "general" },
     ];
 
     const filters = ["all", "registration", "appointment", "vaccination", "schedule", "general"];
@@ -43,15 +46,15 @@ export default function FAQScreen({ navigation }) {
                     <FontAwesome name="chevron-left" size={16} color="#F43F8A" />
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>FAQs</Text>
-                <View style={{ width: 20 }} />
+                <LanguageToggle />
             </View>
 
             <ScrollView style={styles.container}>
 
                 {/* Title */}
-                <Text style={styles.title}>Frequently Asked Questions</Text>
+                <Text style={styles.title}>{t('faq.title')}</Text>
                 <Text style={styles.subtitle}>
-                    Answers to common questions about Vaccination Tracker
+                    {t('faq.subtitle')}
                 </Text>
 
                 {/* Filters */}
@@ -72,7 +75,7 @@ export default function FAQScreen({ navigation }) {
                                 styles.filterText,
                                 activeFilter === item && styles.activeFilterText
                             ]}>
-                                {item.charAt(0).toUpperCase() + item.slice(1)}
+                                {t(`faq.filters.${item}`)}
                             </Text>
                         </TouchableOpacity>
                     ))}

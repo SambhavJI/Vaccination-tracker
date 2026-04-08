@@ -9,10 +9,13 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { SECTIONS } from "../data/BasicInfo";
+import { SECTION_KEYS } from "../data/BasicInfo";
 import { basicInfoStyles as styles } from "../styles/BasicInfoStyle";
+import { useTranslation } from 'react-i18next';
+import LanguageToggle from '../components/LanguageToggle';
 
-function AnimatedCard({ section, index }) {
+function AnimatedCard({ sectionKey, index }) {
+    const { t } = useTranslation();
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const slideAnim = useRef(new Animated.Value(30)).current;
 
@@ -33,13 +36,20 @@ function AnimatedCard({ section, index }) {
         ]).start();
     }, []);
 
+    const title = t(`basicInfoData.${sectionKey.key}.title`);
+    const urgentText = t(`basicInfoData.${sectionKey.key}.urgentText`);
+    const items = [];
+    for (let i = 1; i <= sectionKey.itemCount; i++) {
+        items.push(t(`basicInfoData.${sectionKey.key}.i${i}`));
+    }
+
     return (
         <Animated.View
             style={[
                 styles.card,
                 {
-                    backgroundColor: section.color,
-                    borderColor: section.border,
+                    backgroundColor: sectionKey.color,
+                    borderColor: sectionKey.border,
                     opacity: fadeAnim,
                     transform: [{ translateY: slideAnim }],
                 },
@@ -47,30 +57,30 @@ function AnimatedCard({ section, index }) {
         >
             {/* Card Header */}
             <View style={styles.cardHeader}>
-                <View style={[styles.numberBadge, { backgroundColor: section.accent }]}>
-                    <Text style={styles.numberText}>{section.number}</Text>
+                <View style={[styles.numberBadge, { backgroundColor: sectionKey.accent }]}>
+                    <Text style={styles.numberText}>{sectionKey.number}</Text>
                 </View>
-                <Text style={styles.cardIcon}>{section.icon}</Text>
-                <Text style={[styles.cardTitle, { color: section.accent }]}>
-                    {section.title}
+                <Text style={styles.cardIcon}>{sectionKey.icon}</Text>
+                <Text style={[styles.cardTitle, { color: sectionKey.accent }]}>
+                    {title}
                 </Text>
             </View>
 
             {/* Urgent Banner */}
-            {section.urgent && (
-                <View style={[styles.urgentBanner, { backgroundColor: section.accent }]}>
-                    <Text style={styles.urgentText}>⚡ Seek Immediate Medical Help</Text>
+            {sectionKey.urgent && (
+                <View style={[styles.urgentBanner, { backgroundColor: sectionKey.accent }]}>
+                    <Text style={styles.urgentText}>{urgentText}</Text>
                 </View>
             )}
 
             {/* Divider */}
-            <View style={[styles.divider, { backgroundColor: section.border }]} />
+            <View style={[styles.divider, { backgroundColor: sectionKey.border }]} />
 
             {/* Items */}
             <View style={styles.itemsContainer}>
-                {section.items.map((item, i) => (
+                {items.map((item, i) => (
                     <View key={i} style={styles.itemRow}>
-                        <View style={[styles.dot, { backgroundColor: section.accent }]} />
+                        <View style={[styles.dot, { backgroundColor: sectionKey.accent }]} />
                         <Text style={styles.itemText}>{item}</Text>
                     </View>
                 ))}
@@ -80,6 +90,7 @@ function AnimatedCard({ section, index }) {
 }
 
 export default function BasicInfoScreen({ navigation }) {
+    const { t } = useTranslation();
     const headerFade = useRef(new Animated.Value(0)).current;
     const headerSlide = useRef(new Animated.Value(-20)).current;
 
@@ -103,14 +114,15 @@ export default function BasicInfoScreen({ navigation }) {
             <StatusBar barStyle="dark-content" backgroundColor="#fdf6f0" />
 
             {/* Header with Back Button */}
-            <View style={styles.header}>
+            <View style={[styles.header, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}>
                 <TouchableOpacity
                     onPress={() => navigation.goBack()}
                     style={styles.backButton}
                 >
                     <FontAwesome name="chevron-left" size={14} color="#e8703a" />
-                    <Text style={styles.backText}>Basic info</Text>
+                    <Text style={styles.backText}>{t('basicInfo.back')}</Text>
                 </TouchableOpacity>
+                <LanguageToggle />
             </View>
 
             <ScrollView
@@ -129,44 +141,25 @@ export default function BasicInfoScreen({ navigation }) {
                     ]}
                 >
                     <Text style={styles.heroEmoji}>🤱</Text>
-                    <Text style={styles.heroTitle}>Pregnancy Guide</Text>
+                    <Text style={styles.heroTitle}>{t('basicInfo.title')}</Text>
                     <Text style={styles.heroSubtitle}>
-                        Normal & abnormal signs, baby health, and month-wise diet
+                        {t('basicInfo.subtitle')}
                     </Text>
                     <View style={styles.heroPill}>
-                        <Text style={styles.heroPillText}>13 Essential Topics</Text>
+                        <Text style={styles.heroPillText}>{t('basicInfo.essentialTopics')}</Text>
                     </View>
                 </Animated.View>
 
-                {/* Section Group Labels */}
-
-                <AnimatedCard section={SECTIONS[0]} index={0} />
-                <AnimatedCard section={SECTIONS[1]} index={1} />
-
-                <AnimatedCard section={SECTIONS[2]} index={2} />
-                <AnimatedCard section={SECTIONS[3]} index={3} />
-
-                <AnimatedCard section={SECTIONS[4]} index={4} />
-                <AnimatedCard section={SECTIONS[5]} index={5} />
-
-                <AnimatedCard section={SECTIONS[6]} index={6} />
-                <AnimatedCard section={SECTIONS[7]} index={7} />
-
-                <AnimatedCard section={SECTIONS[8]} index={8} />
-                <AnimatedCard section={SECTIONS[9]} index={9} />
-                <AnimatedCard section={SECTIONS[10]} index={10} />
-                <AnimatedCard section={SECTIONS[11]} index={11} />
-                <AnimatedCard section={SECTIONS[12]} index={12} />
+                {SECTION_KEYS.map((sk, idx) => (
+                    <AnimatedCard key={sk.key} sectionKey={sk} index={idx} />
+                ))}
 
                 {/* Footer */}
                 <View style={styles.footer}>
                     <Text style={styles.footerHeart}>💗</Text>
-                    <Text style={styles.footerTitle}>Healthy Mom · Healthy Baby</Text>
+                    <Text style={styles.footerTitle}>{t('basicInfo.footerTitle')}</Text>
                     <Text style={styles.footerSub}>
-                        Always consult your doctor for personalized advice.
-                        {"\n"}
-                        Never take any medication without a prescription or professional guidance,
-                        as it may lead to unwanted or harmful consequences for you or your baby.
+                        {t('basicInfo.footerSub')}
                     </Text>
                 </View>
             </ScrollView>

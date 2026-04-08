@@ -21,8 +21,11 @@ import { Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DocumentStyles as styles } from '../styles/DocumentStyles';
 import { apiGet, apiUpload, apiDelete } from '../config/apiRequest';
+import { useTranslation } from 'react-i18next';
+import LanguageToggle from '../components/LanguageToggle';
 
 export default function DocumentScreen({ navigation }) {
+    const { t } = useTranslation();
     const [documents, setDocuments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
@@ -76,13 +79,13 @@ export default function DocumentScreen({ navigation }) {
             }
         } catch (e) {
             console.log('[Upload] Picker error:', e.message);
-            Alert.alert('Error', 'Could not open the file picker.');
+            Alert.alert(t('documents.networkError'), t('documents.couldNotOpenPicker'));
         }
     };
 
     const handleUpload = async () => {
         if (!pickedFile) {
-            Alert.alert('No file selected', 'Please pick a file first.');
+            Alert.alert(t('documents.noFileSelected'), t('documents.pleasePickFile'));
             return;
         }
 
@@ -91,7 +94,7 @@ export default function DocumentScreen({ navigation }) {
             const token = await AsyncStorage.getItem('userToken');
 
             const formData = new FormData();
-            
+
             if (Platform.OS === 'web' && pickedFile.file) {
                 formData.append('document', pickedFile.file);
             } else {
@@ -110,10 +113,10 @@ export default function DocumentScreen({ navigation }) {
                 setDocuments(prev => [data.document, ...prev]);
                 closeModal();
             } else {
-                Alert.alert('Upload failed', `Server returned ${response.status}: ${data.message}`);
+                Alert.alert(t('documents.uploadFailed'), `Server returned ${response.status}: ${data.message}`);
             }
         } catch (err) {
-            Alert.alert('Network Error', err.message);
+            Alert.alert(t('documents.networkError'), err.message);
         } finally {
             setUploading(false);
         }
@@ -132,25 +135,25 @@ export default function DocumentScreen({ navigation }) {
                 if (response.ok) {
                     setDocuments(prev => prev.filter(d => d._id !== docId));
                 } else {
-                    Alert.alert('Error', `API Error: ${response.status} - ${data.message || 'Could not delete'}`);
+                    Alert.alert(t('documents.networkError'), `API Error: ${response.status} - ${data.message || t('documents.deleteApiError')}`);
                 }
             } catch (err) {
-                Alert.alert('Network Error', err.message);
+                Alert.alert(t('documents.networkError'), err.message);
             }
         };
 
         if (Platform.OS === 'web') {
-            const confirmed = window.confirm(`Are you sure you want to delete "${docName}"?`);
+            const confirmed = window.confirm(t('documents.deleteConfirm', { name: docName }));
             if (confirmed) {
                 await performDelete();
             }
         } else {
             Alert.alert(
-                'Delete Document',
-                `Are you sure you want to delete "${docName}"?`,
+                t('documents.deleteDocument'),
+                t('documents.deleteConfirm', { name: docName }),
                 [
-                    { text: 'Cancel', style: 'cancel' },
-                    { text: 'Delete', style: 'destructive', onPress: performDelete },
+                    { text: t('documents.cancel'), style: 'cancel' },
+                    { text: t('documents.delete'), style: 'destructive', onPress: performDelete },
                 ]
             );
         }
@@ -170,7 +173,7 @@ export default function DocumentScreen({ navigation }) {
     const handleViewDocument = async (url) => {
         try {
             if (!url) {
-                Alert.alert('Error', 'Document URL is empty or corrupted.');
+                Alert.alert(t('documents.networkError'), t('documents.documentUrlError'));
                 return;
             }
 
@@ -187,7 +190,7 @@ export default function DocumentScreen({ navigation }) {
                 await WebBrowser.openBrowserAsync(viewUrl);
             }
         } catch (e) {
-            Alert.alert('Error', 'Could not open the document.');
+            Alert.alert(t('documents.networkError'), t('documents.couldNotOpenDocument'));
         }
     };
 
@@ -242,7 +245,10 @@ export default function DocumentScreen({ navigation }) {
                 >
                     <Ionicons name="arrow-back" size={24} color="#64748b" />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>My Documents</Text>
+                <Text style={styles.headerTitle}>{t('documents.myDocuments')}</Text>
+                <View style={{ position: 'absolute', right: 16, alignSelf: 'center' }}>
+                    <LanguageToggle />
+                </View>
             </View>
 
             {loading ? (
@@ -254,7 +260,7 @@ export default function DocumentScreen({ navigation }) {
                     <FontAwesome name="exclamation-circle" size={48} color="#ef4444" />
                     <Text style={[styles.emptyText, { color: '#ef4444' }]}>{error}</Text>
                     <TouchableOpacity onPress={fetchDocuments} style={{ marginTop: 12 }}>
-                        <Text style={{ color: '#e8703a', fontWeight: '600' }}>Retry</Text>
+                        <Text style={{ color: '#e8703a', fontWeight: '600' }}>{t('documents.retry')}</Text>
                     </TouchableOpacity>
                 </View>
             ) : (
@@ -267,7 +273,7 @@ export default function DocumentScreen({ navigation }) {
                     ListEmptyComponent={
                         <View style={styles.emptyContainer}>
                             <FontAwesome name="folder-open-o" size={48} color="#cbd5e1" />
-                            <Text style={styles.emptyText}>No documents uploaded yet.</Text>
+                            <Text style={styles.emptyText}>{t('documents.noDocuments')}</Text>
                         </View>
                     }
                 />
@@ -293,7 +299,7 @@ export default function DocumentScreen({ navigation }) {
                     <View style={styles.modalOverlay}>
                         <View style={styles.modalContainer}>
                             <View style={styles.modalHeader}>
-                                <Text style={styles.modalTitle}>Upload Document</Text>
+                                <Text style={styles.modalTitle}>{t('documents.uploadDocument')}</Text>
                                 <TouchableOpacity onPress={closeModal}>
                                     <Ionicons name="close" size={24} color="#64748b" />
                                 </TouchableOpacity>
@@ -303,14 +309,14 @@ export default function DocumentScreen({ navigation }) {
                                 <TouchableOpacity style={styles.pickFileButton} onPress={handlePickFile}>
                                     <Ionicons name="document-attach-outline" size={20} color="#e8703a" />
                                     <Text style={styles.pickFileText}>
-                                        {pickedFile ? pickedFile.name : 'Choose File (PDF / Image)'}
+                                        {pickedFile ? pickedFile.name : t('documents.chooseFile')}
                                     </Text>
                                 </TouchableOpacity>
 
-                                <Text style={styles.inputLabel}>Document Name</Text>
+                                <Text style={styles.inputLabel}>{t('documents.documentName')}</Text>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="e.g. Blood Test Results"
+                                    placeholder={t('documents.documentNamePlaceholder')}
                                     value={newDocName}
                                     onChangeText={setNewDocName}
                                     placeholderTextColor="#94a3b8"
@@ -323,7 +329,7 @@ export default function DocumentScreen({ navigation }) {
                                 >
                                     {uploading
                                         ? <ActivityIndicator color="#fff" />
-                                        : <Text style={styles.submitButtonText}>Upload</Text>
+                                        : <Text style={styles.submitButtonText}>{t('documents.upload')}</Text>
                                     }
                                 </TouchableOpacity>
                             </ScrollView>
