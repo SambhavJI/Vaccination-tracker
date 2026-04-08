@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import adminRouter from './routes/adminRouter.js';
 import userRouter from './routes/userRouter.js';
+import './jobs/vaccineReminder.js';
 dotenv.config();
 
 const app = express();
