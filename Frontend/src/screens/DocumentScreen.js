@@ -90,16 +90,18 @@ export default function DocumentScreen({ navigation }) {
         try {
             const token = await AsyncStorage.getItem('userToken');
 
-            let documentToUpload;
+            const formData = new FormData();
+            
             if (Platform.OS === 'web' && pickedFile.file) {
-                documentToUpload = pickedFile.file;
+                formData.append('document', pickedFile.file);
             } else {
-                const fileResponse = await fetch(pickedFile.uri);
-                documentToUpload = await fileResponse.blob();
+                formData.append('document', {
+                    uri: pickedFile.uri,
+                    name: pickedFile.name,
+                    type: pickedFile.mimeType || 'application/octet-stream',
+                });
             }
 
-            const formData = new FormData();
-            formData.append('document', documentToUpload, pickedFile.name);
             formData.append('name', newDocName.trim() || pickedFile.name);
 
             const { response, data } = await apiUpload('/user/upload', formData, token);

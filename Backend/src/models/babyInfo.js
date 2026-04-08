@@ -21,6 +21,16 @@ const babyInfoSchema = new mongoose.Schema({
     motherConceiveDate: {
         type: Date,
         default: null
+    },
+
+    gender: {
+        type: String,
+        default: null
+    },
+
+    bloodGroup: {
+        type: String,
+        default: null
     }
 
 }, { timestamps: true });

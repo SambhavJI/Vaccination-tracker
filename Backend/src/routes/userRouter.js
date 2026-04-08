@@ -1,10 +1,9 @@
 import express from 'express';
 import { authMiddleware, authorizeRole } from '../middlewares/authMiddleware.js';
-import { allBaby , getAllVaccines, pendingVaccination } from '../controller/userController.js';
+import { allBaby, getUserVaccines, getUserProfile, updateUserProfile, registerMyChild, updateMyChild, setUserVaccineCompleted } from '../controller/userController.js';
 import upload from '../middlewares/upload.js';
 import User from '../models/user.js';
 import cloudinary from '../config/cloudinary.js';
-import userVaccine from '../models/userVaccine.js';
 
 const userRouter = express.Router();
 
@@ -15,18 +14,20 @@ userRouter.get(
     authorizeRole('user', 'admin'),
     allBaby
 );
+
 userRouter.get(
-    '/all-vaccines',
+    '/vaccines',
     authMiddleware,
-    authorizeRole('user', 'admin'),
-    getAllVaccines
+    authorizeRole('user'),
+    getUserVaccines
 );
-userRouter.get(
-    '/pending-vaccination',
-    authMiddleware,
-    authorizeRole('user', 'admin'),
-    pendingVaccination
-);
+
+userRouter.get('/profile', authMiddleware, authorizeRole('user', 'admin'), getUserProfile);
+userRouter.put('/profile', authMiddleware, authorizeRole('user', 'admin'), updateUserProfile);
+
+userRouter.post('/baby', authMiddleware, authorizeRole('user', 'admin'), registerMyChild);
+userRouter.put('/baby/:babyId', authMiddleware, authorizeRole('user', 'admin'), updateMyChild);
+userRouter.post('/set-completed-status', authMiddleware, authorizeRole('user', 'admin'), setUserVaccineCompleted);
 
 
 userRouter.post(

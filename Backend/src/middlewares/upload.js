@@ -4,10 +4,13 @@ import cloudinary from "../config/cloudinary.js";
 
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
-    params: {
-        folder: "user_documents",
-        allowed_formats: ["jpg", "png", "pdf"],
-        resource_type: "auto",
+    params: async (req, file) => {
+        const isPdf = file.originalname.toLowerCase().endsWith('.pdf') || file.mimetype === 'application/pdf';
+        return {
+            folder: "user_documents",
+            resource_type: isPdf ? "raw" : "auto",
+            allowed_formats: ["jpg", "jpeg", "png", "pdf"]
+        };
     }
 });
 

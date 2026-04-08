@@ -89,6 +89,23 @@ export function apiUpload(path, formData, token) {
     });
 }
 
+export async function apiPutAuth(path, body, token) {
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    const response = await fetchWithTimeout(`${API_URL}${path}`, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify(body),
+    });
+    let data;
+    try {
+        data = await response.json();
+    } catch {
+        data = { message: 'Invalid response from server' };
+    }
+    return { response, data };
+}
+
 export async function apiDelete(path, token) {
     const headers = { 'Content-Type': 'application/json' };
     if (token) headers['Authorization'] = `Bearer ${token}`;
