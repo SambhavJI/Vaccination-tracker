@@ -52,31 +52,31 @@ cron.schedule("0 8 * * *", async () => {
             const dueDate = record.scheduledDate.toISOString().split("T")[0]; // e.g. "2026-04-06"
 
             try {
-                const emailPromise = sendEmail({
-                    to: user.email,
-                    subject: `Upcoming Vaccination Reminder: ${vaccineName} 💉`,
-                    html: `
-                        <h3>Hello ${user.name || "Parent"},</h3>
-                        <p>This is a gentle reminder that the <b>${vaccineName}</b> vaccine for <b>${babyName}</b> is due soon.</p>
-                        <p><b>Scheduled Date:</b> ${dueDate}</p>
-                        <br/>
-                        <p>Thank you,</p>
-                        <p>Vaccination Tracker Team</p>
-                    `
-                }).catch(e => console.error(`Failed to send email to ${user.email} for record ${record._id}:`, e));
+                // const emailPromise = sendEmail({
+                //     to: user.email,
+                //     subject: `Upcoming Vaccination Reminder: ${vaccineName} 💉`,
+                //     html: `
+                //         <h3>Hello ${user.name || "Parent"},</h3>
+                //         <p>This is a gentle reminder that the <b>${vaccineName}</b> vaccine for <b>${babyName}</b> is due soon.</p>
+                //         <p><b>Scheduled Date:</b> ${dueDate}</p>
+                //         <br/>
+                //         <p>Thank you,</p>
+                //         <p>Vaccination Tracker Team</p>
+                //     `
+                // }).catch(e => console.error(`Failed to send email to ${user.email} for record ${record._id}:`, e));
 
-                const smsBody = `Hello ${user.name || "Parent"}, a gentle reminder that the ${vaccineName} vaccine for ${babyName} is due on ${dueDate}. Thank you, Vaccination Tracker Team`;
+                // const smsBody = `Hello ${user.name || "Parent"}, a gentle reminder that the ${vaccineName} vaccine for ${babyName} is due on ${dueDate}. Thank you, Vaccination Tracker Team`;
                 
-                let smsPromise = Promise.resolve();
-                if (user.phone) {
-                    smsPromise = sendSms({
-                        to: user.phone,
-                        body: smsBody
-                    }).catch(e => console.error(`Failed to send SMS to ${user.phone} for record ${record._id}:`, e));
-                }
+                // let smsPromise = Promise.resolve();
+                // if (user.phone) {
+                //     smsPromise = sendSms({
+                //         to: user.phone,
+                //         body: smsBody
+                //     }).catch(e => console.error(`Failed to send SMS to ${user.phone} for record ${record._id}:`, e));
+                // }
 
-                // Send both notifications in parallel
-                await Promise.all([emailPromise, smsPromise]);
+                // // Send both notifications in parallel
+                // await Promise.all([emailPromise, smsPromise]);
 
                 // Mark reminder as sent to prevent duplicates
                 await UserVaccine.findByIdAndUpdate(record._id, {
